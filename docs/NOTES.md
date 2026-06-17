@@ -32,6 +32,41 @@ endif()
 - Bump spdlog to a newer tag with fixed fmtlib — deferred, requires validation
 - `SPDLOG_FMT_EXTERNAL` — adds a system fmtlib dependency, undesirable for a distributable wheel
 
+**Why per-target C++20 doesn't work either:** `logging.h` includes `<spdlog/spdlog.h>`
+directly. Every translation unit in the `touchpy` target that includes `logging.h`
+pulls in the fmtlib headers. Setting `CXX_STANDARD 20` on the target compiles all
+those TUs at C++20, so the consteval issue surfaces in the consumer files
+(`choplink.cpp`, `comp.cpp`, etc.), not just `spdlog-src/`. The fix must happen
+at the spdlog/fmtlib level (tasks 0002, 0003).
+
+### spdlog dependency surface (audited 2026-06-16)
+
+All spdlog usage is funnelled through `source/logging.h` — the only file that
+includes spdlog headers directly. Every other file includes `logging.h`.
+
+Files that `#include "logging.h"` and their call patterns:
+
+| File | Calls | macOS port status |
+|------|-------|-------------------|
+| `logging.cpp` | `initLogging()`, `setLogLevel()`, sink setup | compiles |
+| `comp.cpp` | `info/warn/error` — ~40 call sites | blocked (vulkan/cuda headers) |
+| `chopchannels.cpp` | include only, no direct calls | compiles |
+| `choplink.cpp` | `error` — 1 site | compiles |
+| `datlink.cpp` | `error` — 2 sites | compiles |
+| `dattable.cpp` | include only | compiles |
+| `toplink.cpp` | `error` — 3 sites | excluded (cuda) |
+| `texture.cpp` | `error` — 1 site | excluded (cuda) |
+| `renderer.cpp` | `error/debug` — 6 sites | excluded (vulkan) |
+| `deviceinfo.h` | `debug` — 1 site | excluded (cuda) |
+| `pybindings/touchpy.cpp` | exposes `LogLevel` enum + `init_logging`/`set_log_level` to Python | compiles |
+| `vri/vri.cpp` | `debug/error` — heavily used | excluded (vulkan) |
+| `vri/vri_macros.h` | `error` in `VK_CHECK` macro | excluded (vulkan) |
+
+The macOS-compilable files that use logging (`choplink.cpp`, `datlink.cpp`,
+`dattable.cpp`, `chopchannels.cpp`, `pybindings/touchpy.cpp`) are all low-call-site
+consumers. The heavy logging is in `comp.cpp` and `vri/` — both blocked by
+platform guards anyway.
+
 ## Notes
 
 - [Architecture overview](architecture-overview.md) — build system, C++/CUDA/Vulkan/Python layer structure, macOS port strategy
