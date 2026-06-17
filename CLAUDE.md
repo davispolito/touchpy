@@ -9,6 +9,13 @@ Load these skills at the start of every session:
 /metal-gpu-debug
 ```
 
+## Graphify
+
+`graphify-out/` exists at the project root — the knowledge graph has been generated.
+Before investigating any dependency, architecture, or "what uses X" question, query
+the graph first via `/graphify`. Do not read source files cold when the graph can
+answer the question faster and with broader context.
+
 ## What This Is
 
 TouchPy is a C++17/nanobind Python extension that wraps the TouchEngine SDK, letting Python code drive TouchDesigner components. The `dev-macos` branch is an active port from Windows (CUDA + Vulkan) to macOS (Metal + Obj-C++).
