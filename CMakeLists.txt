@@ -12,21 +12,29 @@ if(POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-set(CMAKE_CUDA_ARCHITECTURES 75 80 86 89)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CUDA_STANDARD 17)
-set(CMAKE_CUDA_STANDARD_REQUIRED True)
+# Platform detection — must precede project() for language selection.
+# On macOS: OBJCXX, no CUDA. On Windows: CUDA required.
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(TOUCHPY_MACOS ON)
+    set(_TOUCHPY_LANGUAGES CXX OBJCXX)
+else()
+    set(TOUCHPY_MACOS OFF)
+    set(CMAKE_CUDA_ARCHITECTURES 75 80 86 89)
+    set(CMAKE_CUDA_STANDARD 17)
+    set(CMAKE_CUDA_STANDARD_REQUIRED True)
+    set(_TOUCHPY_LANGUAGES CXX CUDA)
+endif()
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-project("TouchPy" LANGUAGES CXX CUDA)
+project("TouchPy" LANGUAGES ${_TOUCHPY_LANGUAGES})
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
@@ -34,12 +42,29 @@ file(GLOB_RECURSE CPP_SOURCES "${SOURCE_DIR}/*.cpp" "${SOURCE_DIR}/*.c" "${SOURC
 list(FILTER CPP_SOURCES EXCLUDE REGEX ".*gtest\.cpp$")
 list(FILTER CPP_SOURCES EXCLUDE REGEX ".*main\.cpp$")
 
-file(GLOB_RECURSE CUDA_SOURCES "${SOURCE_DIR}/*.cu" "${SOURCE_DIR}/*.cuh")
+if(TOUCHPY_MACOS)
+    # Exclude GPU-specific subtrees: Vulkan renderer (vri/), CUDA memory, texture
+    # interop, and TOP link — none compile without CUDA/Vulkan SDK headers.
+    # Source-level #ifdef __APPLE__ guards in comp.h / toplink.h are the follow-on
+    # task; these CMake exclusions define the macOS translation unit boundary.
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/vri/.*")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/renderer\.(cpp|h)$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/texture\.(cpp|h)$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/cudamemory\.(cpp|h)$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/toplink\.(cpp|h)$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/copykernels\.(cu|cuh)$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/cudadatatypes\.h$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/cudaflags\.h$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/deviceinfo\.h$")
+    list(FILTER CPP_SOURCES EXCLUDE REGEX ".*common/cuda_helpers\.h$")
+else()
+    file(GLOB_RECURSE CUDA_SOURCES "${SOURCE_DIR}/*.cu" "${SOURCE_DIR}/*.cuh")
+endif()
 
 # print all sources if on
 set(PRINT_SOURCE_FILES Off)
 if(PRINT_SOURCE_FILES)
-    foreach(source IN LISTS CPP_SOURCES CUDA_SOURCES)
+    foreach(source IN LISTS CPP_SOURCES)
       message(STATUS "touchpy source: ${source}")
     endforeach()
 endif()
@@ -54,14 +79,44 @@ if(WIN32)
         VK_USE_PLATFORM_WIN32_KHR
     )
 endif()
+if(TOUCHPY_MACOS)
+    list(APPEND COMPILE_DEFINITIONS TOUCHPY_MACOS)
+endif()
 
 include(FetchContent)
 
-find_package(Vulkan REQUIRED)
-message(STATUS Vulkan_INCLUDE_DIR=${Vulkan_INCLUDE_DIR})
+# TouchEngine SDK — platform-specific paths and link strategy
+if(TOUCHPY_MACOS)
+    set(TOUCHENGINE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-macOS")
+    set(TOUCHENGINE_FRAMEWORK "${TOUCHENGINE_DIR}/TouchEngine.framework")
+    if(NOT EXISTS "${TOUCHENGINE_FRAMEWORK}")
+        message(FATAL_ERROR
+            "TouchEngine.framework not found at ${TOUCHENGINE_FRAMEWORK}\n"
+            "Run: git submodule update --init")
+    endif()
+    message(STATUS "TouchEngine.framework: ${TOUCHENGINE_FRAMEWORK}")
+else()
+    find_package(Vulkan REQUIRED)
+    message(STATUS Vulkan_INCLUDE_DIR=${Vulkan_INCLUDE_DIR})
 
-find_package(CUDAToolkit REQUIRED)
-message(STATUS CUDAToolkit_INCLUDE_DIRS=${CUDAToolkit_INCLUDE_DIRS})
+    find_package(CUDAToolkit REQUIRED)
+    message(STATUS CUDAToolkit_INCLUDE_DIRS=${CUDAToolkit_INCLUDE_DIRS})
+
+    FetchContent_Declare(
+      VulkanMemoryAllocator
+      GIT_REPOSITORY https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+      GIT_TAG v3.1.0
+      CONFIGURE_COMMAND ""
+      BUILD_COMMAND ""
+    )
+    FetchContent_MakeAvailable(VulkanMemoryAllocator)
+
+    # Source includes VMA as "vma/vk_mem_alloc.h" (matching Vulkan SDK layout)
+    # but the VMA repo puts it at include/vk_mem_alloc.h — create the expected structure
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_vma_include/vma")
+    file(COPY "${vulkanmemoryallocator_SOURCE_DIR}/include/vk_mem_alloc.h"
+         DESTINATION "${CMAKE_BINARY_DIR}/_vma_include/vma")
+endif()
 
 FetchContent_Declare(
   spdlog
@@ -69,21 +124,6 @@ FetchContent_Declare(
   GIT_TAG v1.15.0
 )
 FetchContent_MakeAvailable(spdlog)
-
-FetchContent_Declare(
-  VulkanMemoryAllocator
-  GIT_REPOSITORY https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
-  GIT_TAG v3.1.0
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-)
-FetchContent_MakeAvailable(VulkanMemoryAllocator)
-
-# Source includes VMA as "vma/vk_mem_alloc.h" (matching Vulkan SDK layout)
-# but the VMA repo puts it at include/vk_mem_alloc.h — create the expected structure
-file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_vma_include/vma")
-file(COPY "${vulkanmemoryallocator_SOURCE_DIR}/include/vk_mem_alloc.h"
-     DESTINATION "${CMAKE_BINARY_DIR}/_vma_include/vma")
 
 # touchpy
 #################################################################################################
@@ -103,48 +143,66 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT)
 find_package(nanobind CONFIG REQUIRED)
 
-# Create a static library for CUDA sources
-add_library(touchpy_cuda STATIC ${CUDA_SOURCES})
-set_target_properties(touchpy_cuda PROPERTIES LINKER_LANGUAGE CUDA)
-
-# Add nanobind module with only C/C++ sources
+# Add nanobind module
 nanobind_add_module(touchpy NB_DOMAIN NOMINSIZE ${CPP_SOURCES})
-
 target_compile_definitions(touchpy PRIVATE ${COMPILE_DEFINITIONS})
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(touchpy PRIVATE DISABLE_DEBUG_BUILD)
 endif()
 
-target_include_directories(touchpy PRIVATE
-    ${SOURCE_DIR}
-    ${CUDAToolkit_INCLUDE_DIRS}
-    "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/include"
-    "${CMAKE_BINARY_DIR}/_vma_include"
-)
+if(TOUCHPY_MACOS)
+    target_include_directories(touchpy PRIVATE
+        ${SOURCE_DIR}
+        "${TOUCHENGINE_FRAMEWORK}/Headers"
+    )
+    target_link_libraries(touchpy PRIVATE
+        "${TOUCHENGINE_FRAMEWORK}/TouchEngine"
+        spdlog::spdlog
+        "-framework Metal"
+        "-framework Foundation"
+    )
+    set_target_properties(touchpy PROPERTIES
+        BUILD_RPATH "@loader_path"
+        INSTALL_RPATH "@loader_path"
+    )
+    install(TARGETS touchpy LIBRARY DESTINATION touchpy)
+    install(DIRECTORY "${TOUCHENGINE_FRAMEWORK}"
+        DESTINATION touchpy
+        USE_SOURCE_PERMISSIONS
+    )
+else()
+    # Create a static library for CUDA sources
+    add_library(touchpy_cuda STATIC ${CUDA_SOURCES})
+    set_target_properties(touchpy_cuda PROPERTIES LINKER_LANGUAGE CUDA)
 
-target_link_directories(touchpy PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/lib"
-)
+    target_include_directories(touchpy PRIVATE
+        ${SOURCE_DIR}
+        ${CUDAToolkit_INCLUDE_DIRS}
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/include"
+        "${CMAKE_BINARY_DIR}/_vma_include"
+    )
+    target_link_directories(touchpy PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/lib"
+    )
+    target_link_libraries(touchpy PRIVATE
+        touchpy_cuda
+        TouchEngine
+        Vulkan::Vulkan
+        spdlog::spdlog
+    )
 
-target_link_libraries(touchpy PRIVATE
-    touchpy_cuda
-    TouchEngine
-    Vulkan::Vulkan
-    spdlog::spdlog
-)
+    if(MSVC)
+        target_compile_options(touchpy PRIVATE /wd4819)
+    endif()
 
-# Add warning suppression for MSVC specific warnings
-if(MSVC)
-    target_compile_options(touchpy PRIVATE /wd4819)
+    install(TARGETS touchpy LIBRARY DESTINATION touchpy)
+    install(FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/bin/TouchEngine.dll"
+        "${CUDAToolkit_BIN_DIR}/cudart64_12.dll"
+        DESTINATION touchpy
+    )
 endif()
-
-install(TARGETS touchpy LIBRARY DESTINATION touchpy)
-install(FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/bin/TouchEngine.dll"
-    "${CUDAToolkit_BIN_DIR}/cudart64_12.dll"
-    DESTINATION touchpy
-)
 
 # touchpygtest
 #################################################################################################
@@ -167,23 +225,35 @@ if(NOT SKBUILD)
 
     target_compile_definitions(touchpygtest PRIVATE ${COMPILE_DEFINITIONS})
 
-    target_include_directories(touchpygtest PRIVATE
-        ${SOURCE_DIR}
-        ${CUDAToolkit_INCLUDE_DIRS}
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/include"
-    )
-
-    target_link_directories(touchpygtest PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/lib
-    )
-
-    target_link_libraries(touchpygtest PRIVATE
-        GTest::gtest_main
-        touchpy_cuda
-        TouchEngine
-        Vulkan::Vulkan
-        spdlog::spdlog
-    )
+    if(TOUCHPY_MACOS)
+        target_include_directories(touchpygtest PRIVATE
+            ${SOURCE_DIR}
+            "${TOUCHENGINE_FRAMEWORK}/Headers"
+        )
+        target_link_libraries(touchpygtest PRIVATE
+            GTest::gtest_main
+            "${TOUCHENGINE_FRAMEWORK}/TouchEngine"
+            spdlog::spdlog
+            "-framework Metal"
+            "-framework Foundation"
+        )
+    else()
+        target_include_directories(touchpygtest PRIVATE
+            ${SOURCE_DIR}
+            ${CUDAToolkit_INCLUDE_DIRS}
+            "${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/include"
+        )
+        target_link_directories(touchpygtest PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/external/TouchEngine-Windows/lib
+        )
+        target_link_libraries(touchpygtest PRIVATE
+            GTest::gtest_main
+            touchpy_cuda
+            TouchEngine
+            Vulkan::Vulkan
+            spdlog::spdlog
+        )
+    endif()
 
     include(GoogleTest)
     gtest_discover_tests(touchpygtest)
