@@ -17,8 +17,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Platform detection — must precede project() for language selection.
+# CMAKE_HOST_SYSTEM_NAME is reliable pre-project(); CMAKE_SYSTEM_NAME is not.
 # On macOS: OBJCXX, no CUDA. On Windows: CUDA required.
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(TOUCHPY_MACOS ON)
     set(_TOUCHPY_LANGUAGES CXX OBJCXX)
 else()
