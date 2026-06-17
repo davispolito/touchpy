@@ -50,18 +50,44 @@ examples/        Python usage examples
 
 ## Build & Run
 
+There are two build paths: **direct CMake** (faster iteration, no wheel) and
+**scikit-build-core** (builds a wheel via `uv`/`pip`). Use CMake directly for
+C++ development; use scikit-build-core when you need the installable Python package.
+
+### Direct CMake (preferred for C++ iteration)
+
+nanobind is a build-time dependency, not runtime. For a direct cmake build it must
+be importable by the Python cmake picks up. Install it into the project venv first —
+do NOT use `uv add nanobind` (that adds it as a runtime dep to `pyproject.toml` and
+triggers a full scikit-build-core compile as a side effect):
+
 ```bash
-# Configure (macOS)
-cmake -B build --preset default   # or: cmake -B build -DCMAKE_BUILD_TYPE=Release
+# First time / fresh venv setup
+uv pip install nanobind
+
+# Configure (macOS — no preset needed, CMakePresets.json only has Windows targets)
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 
 # Build
 cmake --build build
 
-# Run C++ tests
+# Run C++ unit tests
 ./build/touchpygtest
+```
 
-# Build Python wheel (scikit-build-core)
-pip install -e ".[dev]"
+Submodules must be initialised before the first configure:
+```bash
+git submodule update --init
+```
+
+### scikit-build-core / wheel (Python package)
+
+Uses the build system declared in `pyproject.toml`. nanobind is listed under
+`[build-system].requires` and is fetched automatically — do not add it to
+`[project].dependencies`.
+
+```bash
+uv pip install -e ".[dev]"   # editable install, rebuilds C++ on each pip install
 ```
 
 ## macOS Port Status (`dev-macos` branch)
