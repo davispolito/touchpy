@@ -55,6 +55,7 @@ cmake --build build
 **Files:**
 - `conftest.py` — session-scoped fixtures: `comp`, `ref`, `stopcomp`
 - `test_pars.py` — parameter read/write assertions against `ref` fixture
+- `test_comp_construct.py` — `Comp()` constructor overload smoke tests (added 2026-06-24)
 
 ### Fixtures
 
@@ -64,31 +65,34 @@ cmake --build build
 | `ref` | session | Reads `test/tox/parvalues.json` as expected-value reference dict |
 | `stopcomp` | session | Calls `comp.stop()` after test session |
 
-The `on_frame` callback advances one frame per call (`start_next_frame()`) and stops on `q` key.
+The `on_frame` callback advances one frame via `start_next_frame()` and stops. When `keyboard` is available and has OS-level access, pressing `q` also stops the loop (interactive use). In headless/CI contexts the `keyboard` check is skipped silently.
 
 ### Runtime Requirement
 
 **A live TouchEngine runtime must be present.** The pytest suite loads an actual `.tox` file via `tp.Comp` and drives real frames. There is no mock — a missing or mismatched TouchEngine will cause the `comp` fixture to hang or raise.
 
-**macOS:** `TouchEngine.framework` is bundled at `external/TouchEngine-macOS/`. It must be linked and accessible at runtime (handled by CMake on the macOS build path).
+**macOS:** `TouchEngine.framework` is bundled at `external/TouchEngine-macOS/`. It must be linked and accessible at runtime (handled by CMake on the macOS build path). TouchDesigner must be installed — TouchEngine auto-discovers it at `/Applications/TouchDesigner *.app`. Do **not** pass `td_path` pointing to the binary inside the bundle; pass the `.app` path or leave it empty for auto-discovery.
+
+**macOS codesign note:** After `git submodule update`, re-sign the framework before running:
+```bash
+codesign --force --deep --sign - external/TouchEngine-macOS/TouchEngine.framework
+```
 
 **Windows:** TouchDesigner must be installed. `preferredEnginePath` on `Comp` can override the default search path.
 
-### conftest.py Path Note
-
-`conftest.py` currently has a hardcoded Windows build path:
-```python
-localImportPath = Path(__file__).parents[2] / 'out/build/x64-release'
-```
-This must be updated for macOS (e.g. `build/`) before the pytest suite can run there.
-
-### Running
+### Running (macOS)
 
 ```bash
 # From repo root, after building touchpy
-cd test/pytest
-pytest -v
+DYLD_FRAMEWORK_PATH=external/TouchEngine-macOS .venv/bin/python -m pytest test/pytest/ -v
 ```
+
+### macOS test status (verified 2026-06-24)
+
+| Suite | Result |
+|-------|--------|
+| `test_comp_construct.py` | 6/6 pass |
+| `test_pars.py` | 11/12 pass — `test_stop` fails (pre-existing upstream double-stop bug, not a port regression) |
 
 ---
 
@@ -113,4 +117,4 @@ The `.tox` is the ground truth for integration tests — parameter names and exp
 | macOS | `TouchEngine.framework` at `external/TouchEngine-macOS/` (submodule, init with `git submodule update --init`) |
 | Windows | TouchDesigner installation discoverable on PATH, or `td_path` passed to `Comp()` |
 | Both | Python venv with `touchpy` built and importable |
-| pytest only | `keyboard` package (`pip install keyboard`) — used in `on_frame` for `q` key exit |
+| pytest only | `keyboard` package (`uv pip install keyboard`) — optional interactive escape; silently skipped if unavailable or no OS access |
