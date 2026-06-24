@@ -91,22 +91,26 @@ void initCompBindings(nb::module_& m)
 
 	nb::class_<Comp> comp(m, "Comp");
 	comp.doc() = CompDoc;
-	comp.def(nb::init<>(), nb::rv_policy::take_ownership)
+	comp.def(nb::init<>())
 
-		.def(nb::init<CompFlagBits, double, uint8_t, const std::string&>(),
-			"flags"_a = static_cast<CompFlags::IntType>(DEFAULT_COMP_FLAG_BITS),
-			"fps"_a = 60,
-			"device"_a = 0u, 
-			"td_path"_a = "",
-			nb::rv_policy::take_ownership)
+		.def("__init__",
+			[](Comp* self, CompFlagBits flags, double fps, uint8_t device, const std::string& td_path) {
+				new (self) Comp(flags, fps, device, td_path);
+			},
+			"flags"_a = DEFAULT_COMP_FLAG_BITS,
+			"fps"_a = 60.0,
+			"device"_a = (uint8_t)0,
+			"td_path"_a = "")
 
-		.def(nb::init<const std::string&, CompFlagBits, double, uint8_t, const std::string&>(),
-			"tox_path"_a, 
-			"flags"_a = static_cast<CompFlags::IntType>(DEFAULT_COMP_FLAG_BITS),
-			"fps"_a = 60, 
-			"device"_a = 0u,
-			"td_path"_a = "",
-			nb::rv_policy::take_ownership)
+		.def("__init__",
+			[](Comp* self, const std::string& tox_path, CompFlagBits flags, double fps, uint8_t device, const std::string& td_path) {
+				new (self) Comp(tox_path, flags, fps, device, td_path);
+			},
+			"tox_path"_a,
+			"flags"_a = DEFAULT_COMP_FLAG_BITS,
+			"fps"_a = 60.0,
+			"device"_a = (uint8_t)0,
+			"td_path"_a = "")
 
 		.def("load",				   [](Comp& self, std::string path, double fps) { self.load(path, fps); } , "tox_path"_a, "fps"_a = 60, loadDoc)
 		.def("unload",                 &Comp::unload, unloadDoc, nb::rv_policy::reference_internal)

@@ -1,27 +1,33 @@
 #conftest.py
 
 import json
-import keyboard
 from pathlib import Path
 import pytest
 import sys
 
-localImportPath = Path(__file__).parents[2] / 'out/build/x64-release'
+try:
+	import keyboard
+	_keyboard_available = True
+except Exception:
+	_keyboard_available = False
+
+localImportPath = Path(__file__).parents[2] / 'build'
 if str(localImportPath) not in sys.path:
-	sys.path.insert(0,str(localImportPath))	
+	sys.path.insert(0,str(localImportPath))
 
 import touchpy as tp
 
-def on_frame(comp, notused):
-	if (keyboard.is_pressed('q')):
-		print("pressed q key")
-		comp.stop()
-		return
+def on_frame(comp):
+	if _keyboard_available:
+		try:
+			if keyboard.is_pressed('q'):
+				print("pressed q key")
+				comp.stop()
+				return
+		except Exception:
+			pass  # no keyboard access (headless / macOS without root)
 	if comp.start_next_frame():
 		comp.stop()
-		pass
-	else:
-		pass
 
 
 @pytest.fixture(scope="session")
@@ -32,9 +38,8 @@ def ref():
 
 @pytest.fixture(scope="session")
 def comp():
-	comp = tp.Comp('../tox/test.tox')
-	fluffdata = {}
-	comp.set_on_frame_callback(on_frame, fluffdata)
+	comp = tp.Comp(str(Path(__file__).parents[1] / 'tox' / 'test.tox'))
+	comp.set_on_frame_callback(on_frame, comp)
 	comp.start()
 	yield comp
 	print("comp fixture teardown after all tests are complete")
