@@ -2,11 +2,13 @@
 
 #include <TouchEngine/TouchEngine.h>
 
+#ifndef TOUCHPY_MACOS
 #include "renderer.h"
 #include "texture.h"
 #include "common/cuda_helpers.h"
-
 #include "toplink.h"
+#endif
+
 #include "choplink.h"
 #include "datlink.h"
 #include "parlink.h"
@@ -57,8 +59,10 @@ public:
 	bool startNextFrame(double seconds);
 	bool startNextFrame(int64_t timeValue, int32_t timeScale);
 
+#ifndef TOUCHPY_MACOS
 	InTopLinks&        inputTopLinks()  { return *inTopLinks_; }
 	OutTopLinks&       outputTopLinks() { return *outTopLinks_; }
+#endif
 	InChopLinks&       inChopLinks()    { return *inChopLinks_; }
 	OutChopLinks&      outChopLinks()   { return *outChopLinks_; }
 	InDatLinks&        inDatLinks()     { return *inDatLinks_; }
@@ -78,22 +82,28 @@ public:
 
 	struct Time
 	{
-		double        seconds{ 0.0 };
-		int64_t       value{ 0 };
-		int32_t       scale{ 6000 };
-		int64_t		  frame{ 0 };
-		double 		  rate{ 0.0 };
+		double  seconds{ 0.0 };
+		int64_t value{ 0 };
+		int32_t scale{ 6000 };
+		int64_t frame{ 0 };
+		double  rate{ 0.0 };
+#ifndef TOUCHPY_MACOS
 		LARGE_INTEGER startTime{ 0 };
 		LARGE_INTEGER performanceCounterFrequency{ 1 };
+#endif
 	};
 
+#ifndef TOUCHPY_MACOS
 	cudaStream_t cudaStream() const { return cudaStream_; }
+#endif
 
 	Time time() const;
 	float frameRate() const;
 	std::string configuredEnginePath() const;
 	std::string filePath() const { return filePath_; }
+#ifndef TOUCHPY_MACOS
 	uint8_t cudaDeviceIndex() const { return cudaDevice_; }
+#endif
 	CompFlags flags() const { return compFlags_; }
 
 	// for internal use only, not for python bindings
@@ -156,6 +166,7 @@ private:
 	TouchObject<TEInstance>   instance_             { nullptr };
 	std::string               preferredEnginePath_;
 
+#ifndef TOUCHPY_MACOS
 	std::shared_ptr<Renderer> renderer_;
 	VkDevice                  device_               { VK_NULL_HANDLE };
 	VkPhysicalDevice          physicalDevice_       { VK_NULL_HANDLE };
@@ -163,17 +174,18 @@ private:
 	VkQueue                   queue_                { VK_NULL_HANDLE };
 	VkCommandBuffer           commandBuffer_        { VK_NULL_HANDLE };
 	VkFence                   submitFence_          { VK_NULL_HANDLE };
-
 	cudaStream_t              cudaStream_           { nullptr };
 	int                       cudaDevice_           { -1 };
-
+#endif
 
 	std::vector<std::string>           changedOutputTextures_;
 	std::vector<std::string>           changedOutputFloatBuffers_;
 	std::vector<std::string>           changedOutputStringData_;
 
+#ifndef TOUCHPY_MACOS
 	std::unique_ptr<InTopLinks>        inTopLinks_;
 	std::unique_ptr<OutTopLinks>       outTopLinks_;
+#endif
 	std::unique_ptr<InChopLinks>       inChopLinks_;
 	std::unique_ptr<OutChopLinks>      outChopLinks_;
 	std::unique_ptr<InDatLinks>        inDatLinks_;
@@ -213,9 +225,11 @@ private:
 	void applyOutputFloatBufferChange();
 	void applyOutputStringDataChange();
 
+#ifndef TOUCHPY_MACOS
 	void createRenderer(uint8_t preferredDeviceIndex);
 	void cudaInit();
 	bool setCudaDevice();
+#endif
 
 	bool callOnFrameCallback();
 	bool callOnLayoutChangeCallback();

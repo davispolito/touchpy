@@ -19,14 +19,14 @@ void fromNumpyToChopLink(
 
 	int32_t channelCount = static_cast<int32_t>(view.shape(0));
 	uint32_t valueCount = static_cast<uint32_t>(view.shape(1));
-	std::vector<const float*> channels(channelCount);
+	std::vector<const float*> channelPtrs(channelCount);
 
 	if (channelNames.size() != channelCount)
 	{
 		for (int32_t i = 0; i < channelCount; ++i)
-			channels[i] = view.data() + i * valueCount;
+			channelPtrs[i] = view.data() + i * valueCount;
 
-		ChopChannelsView channels(std::move(channels), channelCount, valueCount, valueCount, -1.0, false);
+		ChopChannelsView channels(std::move(channelPtrs), channelCount, valueCount, valueCount, -1.0, false);
 		inChopLink.set(std::move(channels));
 	}
 	else
@@ -34,10 +34,10 @@ void fromNumpyToChopLink(
 		std::vector<const char*> names(channelCount);
 		for (int32_t i = 0; i < channelCount; ++i)
 		{
-			channels[i] = view.data() + i * valueCount;
+			channelPtrs[i] = view.data() + i * valueCount;
 			names[i] = channelNames[i].c_str();
 		}
-		ChopChannelsView channels(std::move(channels), channelCount, valueCount, valueCount, -1.0, false, std::move(names));
+		ChopChannelsView channels(std::move(channelPtrs), channelCount, valueCount, valueCount, -1.0, false, std::move(names));
 		inChopLink.set(std::move(channels));
 	}
 }

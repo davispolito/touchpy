@@ -66,12 +66,16 @@ triggers a full scikit-build-core compile as a side effect):
 uv pip install nanobind
 
 # Configure (macOS — no preset needed, CMakePresets.json only has Windows targets)
-cmake -B build -DCMAKE_BUILD_TYPE=Release
+# -DPython_EXECUTABLE: point cmake at the venv python so nanobind is found
+# -DSKBUILD=ON: skip GoogleTest FetchContent (gtest 1.15.2 doesn't support AppleClang 21)
+cmake -B build -S . -DCMAKE_BUILD_TYPE=Release \
+    -DPython_EXECUTABLE=.venv/bin/python \
+    -DSKBUILD=ON
 
 # Build
 cmake --build build
 
-# Run C++ unit tests
+# Run C++ unit tests (Windows only — skip on macOS until gtest is bumped)
 ./build/touchpygtest
 ```
 

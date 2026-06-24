@@ -3,7 +3,9 @@
 #include "common/helpers.h"
 
 #include <TouchEngine/TouchEngine.h>
+#ifndef TOUCHPY_MACOS
 #include <TouchEngine/TEVulkan.h>
+#endif
 #include <string>
 #include <iostream>
 

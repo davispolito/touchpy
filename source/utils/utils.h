@@ -3,6 +3,9 @@
 #include "common/helpers.h"
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
+#include <iomanip>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -75,15 +78,20 @@ inline void safeMemCpy(T* dest, const T* src, size_t count = 1)
 //			MyTypes types = MyTypes { 1, 2.0f, new Object() };
 //			forEach(types, [](auto& element) { element->doSomething(); });
 // 
+namespace detail {
+template <class Tuple, class F, std::size_t... I>
+constexpr F forEach_impl(Tuple&& tuple, F&& f, std::index_sequence<I...>)
+{
+	(f(std::get<I>(tuple)), ...);
+	return std::forward<F>(f);
+}
+}
+
 template <class Tuple, class F>
 constexpr decltype(auto) forEach(Tuple&& tuple, F&& f)
 {
-	return[] <std::size_t... I>
-		(Tuple && tuple, F && f, std::index_sequence<I...>)
-	{
-		(f(std::get<I>(tuple)), ...);
-		return f;
-	}(std::forward<Tuple>(tuple), std::forward<F>(f),
+	return detail::forEach_impl(
+		std::forward<Tuple>(tuple), std::forward<F>(f),
 		std::make_index_sequence<std::tuple_size<std::remove_reference_t<Tuple>>::value>{});
 }
 

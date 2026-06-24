@@ -49,7 +49,7 @@ Files that `#include "logging.h"` and their call patterns:
 | File | Calls | macOS port status |
 |------|-------|-------------------|
 | `logging.cpp` | `initLogging()`, `setLogLevel()`, sink setup | compiles |
-| `comp.cpp` | `info/warn/error` — ~40 call sites | blocked (vulkan/cuda headers) |
+| `comp.cpp` | `info/warn/error` — ~40 call sites | guarded (task 0001) |
 | `chopchannels.cpp` | include only, no direct calls | compiles |
 | `choplink.cpp` | `error` — 1 site | compiles |
 | `datlink.cpp` | `error` — 2 sites | compiles |
@@ -66,6 +66,50 @@ The macOS-compilable files that use logging (`choplink.cpp`, `datlink.cpp`,
 `dattable.cpp`, `chopchannels.cpp`, `pybindings/touchpy.cpp`) are all low-call-site
 consumers. The heavy logging is in `comp.cpp` and `vri/` — both blocked by
 platform guards anyway.
+
+### teutils.h — TEVulkan.h hidden dependency (fixed 2026-06-16)
+
+`teutils.h` unconditionally included `<TouchEngine/TEVulkan.h>`, which pulls in
+`vulkan/vulkan.h`. That header is not available on macOS (no Vulkan SDK). Fixed
+with `#ifndef TOUCHPY_MACOS` guard around the include. This was not in the original
+task 0001 plan — discovered during the build iteration.
+
+### choplinkpy.cpp — variable shadowing in `fromNumpyToChopLink` (fixed 2026-06-24)
+
+`std::vector<const float*> channels` was declared, then `ChopChannelsView channels(...)`
+was constructed in the same scope using `std::move(channels)`. The compiler resolved
+`channels` in the initializer as the `ChopChannelsView` being declared rather than the
+vector, causing a type mismatch. Fixed by renaming the vector to `channelPtrs`.
+
+### comppy.cpp — CUDA/TOP bindings not guarded (fixed 2026-06-24)
+
+`cuda_device`, `in_tops`, `out_tops`, and `cuda_stream` nanobind bindings referenced
+`Comp` members that are guarded away on macOS (`cudaDeviceIndex`, `inputTopLinks`,
+`outputTopLinks`, `cudaStream`). Fixed with `#ifndef TOUCHPY_MACOS` guards around
+those four `.def`/`.def_prop_ro` calls in `initCompBindings`.
+
+### utils/utils.h — missing iostream/iomanip (fixed 2026-06-24)
+
+`printTypeInfo<T>()` uses `std::cout`, `std::setw`, `std::endl` but the header only
+included `<cstdio>`. On Windows these were transitively available through other
+Windows SDK headers. Fixed by adding explicit `<iostream>`, `<iomanip>`, and
+`<cstring>` includes.
+
+### TouchEngine.framework — unsigned library rejected at dlopen (runtime, 2026-06-24)
+
+The framework bundled in `external/TouchEngine-macOS/` carries no valid code signature.
+macOS rejects it at `dlopen` time with "not valid for use in process: Trying to load
+an unsigned library".
+
+**Development workaround:** ad-hoc codesign after each `git submodule update`:
+
+```bash
+codesign --force --deep --sign - external/TouchEngine-macOS/TouchEngine.framework
+```
+
+This is not committed — it only affects the local working tree. Re-run whenever the
+submodule is refreshed. Distribution builds will require a proper Apple Developer
+signing identity.
 
 ## Notes
 

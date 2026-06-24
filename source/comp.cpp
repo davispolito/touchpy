@@ -36,10 +36,10 @@ Comp::Comp(const std::string& filePath, CompFlags compFlags, double fps, uint8_t
 void
 Comp::initComp()
 {
+#ifndef TOUCHPY_MACOS
 	createRenderer(preferredDeviceIndex_);
-
 	if (!(compFlags_ & CompFlagBits::CudaDisable)) cudaInit();
-	
+#endif
 	initInstance();
 }
 
@@ -51,15 +51,17 @@ Comp::~Comp()
 	// call unload() before destruction, or not at all but that will cause memory leaks if the object is the global scope
 	//unload();
 
+#ifndef TOUCHPY_MACOS
 	if (cudaStream_ && compFlags_ & CompFlagBits::CudaStreamInternal) CUDA_CHECK(cudaStreamDestroy(cudaStream_));
-
 	vkDestroyFence(device_, submitFence_, nullptr);
+#endif
 
 	spdlog::info("Comp destroyed");
 	spdlog::default_logger()->flush();
 }
 
-void 
+#ifndef TOUCHPY_MACOS
+void
 Comp::createRenderer(uint8_t preferredDeviceIndex)
 {
 	renderer_ = Renderer::instance(preferredDeviceIndex);
@@ -73,7 +75,9 @@ Comp::createRenderer(uint8_t preferredDeviceIndex)
 	VkFenceCreateInfo fenceCreateInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, nullptr, 0 };
 	vkCreateFence(device_, &fenceCreateInfo, nullptr, &submitFence_);
 }
+#endif
 
+#ifndef TOUCHPY_MACOS
 void
 Comp::cudaInit()
 {
@@ -83,7 +87,7 @@ Comp::cudaInit()
 		return;
 	}
 
-	if (compFlags_ & CompFlagBits::CudaStreamInternal) 
+	if (compFlags_ & CompFlagBits::CudaStreamInternal)
 	{
 		CUDA_CHECK(cudaStreamCreate(&cudaStream_));
 		spdlog::info("CUDA stream created: {}", static_cast<void*>(cudaStream_));
@@ -142,6 +146,7 @@ Comp::setCudaDevice()
 	spdlog::default_logger()->flush();
 	return false;
 }
+#endif // TOUCHPY_MACOS
 
 bool 
 Comp::initInstance()
@@ -156,6 +161,7 @@ Comp::initInstance()
 		throw std::runtime_error("Failed to create TEInstance");
 	}
 
+#ifndef TOUCHPY_MACOS
 	result = TEInstanceAssociateGraphicsContext(instance_, renderer_->teContext());
 	if (result == TEResultSuccess)
 		spdlog::info("TEInstance associated with Vulkan Graphics Context");
@@ -165,6 +171,7 @@ Comp::initInstance()
 		spdlog::default_logger()->flush();
 		throw std::runtime_error("Failed to associate TEInstance with Graphics Context");
 	}
+#endif
 
 	if (!preferredEnginePath_.empty())
 	{
@@ -192,7 +199,11 @@ bool Comp::load(const std::string& filePath, double fps)
 	filePath_ = filePath;
 	time_.rate = fps;
 
+#ifndef TOUCHPY_MACOS
 	if (!renderer_) initComp();
+#else
+	if (!instance_) initComp();
+#endif
 
 	std::ifstream file(filePath, std::ios::in | std::ios::binary);
 	if (!file.is_open())
@@ -282,7 +293,9 @@ Comp::unload()
 		onLayoutChangeData_ = nullptr;
 		onLayoutChangeCallback_ = nullptr;
 
+#ifndef TOUCHPY_MACOS
 		cudaStreamSynchronize(cudaStream_);
+#endif
 
 		TEResult result = TEInstanceUnload(instance_);
 		if (result != TEResultSuccess)
@@ -950,7 +963,9 @@ Comp::asyncUpdate()
 	SPDLOG_DEBUG("asyncUpdate() log in thread successfull");
 	SPDLOG_FLUSH_DEBUG
 
+#ifndef TOUCHPY_MACOS
 	cudaSetDevice(cudaDevice_);
+#endif
 
 	static uint64_t counter = 0;
 	while (asyncRunning_.load())
@@ -1100,12 +1115,13 @@ Comp::applyValueChanges()
 void
 Comp::applyOutputTextureChange()
 {
+#ifndef TOUCHPY_MACOS
 	for (const auto& identifier : changedOutputTextures_)
 	{
 		auto& topLink = *outTopLinks_->getLinkByIdentifier(identifier);
 		topLink.onOutputTextureChange();
-		//topLink.onOutputTextureChange(nullptr);
 	}
+#endif
 }
 
 void
@@ -1172,8 +1188,10 @@ Comp::applyLayoutChange()
 
 	spdlog::info("Applying layout change");
 
+#ifndef TOUCHPY_MACOS
 	inTopLinks_ = std::make_unique<InTopLinks>(instance_, renderer_->teContext(), physicalDevice_, device_, cudaStream_);
 	outTopLinks_ = std::make_unique<OutTopLinks>(instance_, renderer_->teContext(), physicalDevice_, device_, cudaStream_);
+#endif
 
 	inChopLinks_ = std::make_unique<InChopLinks>(instance_);
 	outChopLinks_ = std::make_unique<OutChopLinks>(instance_);
@@ -1213,6 +1231,7 @@ Comp::applyLayoutChange()
 						{
 							SPDLOG_DEBUG(teutils::getLinkInfoAsString(info));
 
+#ifndef TOUCHPY_MACOS
 							if (info->type == TELinkTypeTexture)
 							{
 								if (info->scope == TEScopeInput)
@@ -1224,6 +1243,7 @@ Comp::applyLayoutChange()
 									(*outTopLinks_)[outTopLinks_->size() - 1].setRequiresCudaMemLock(asyncActive_);
 								}
 							}
+#endif
 
 							if (info->type == TELinkTypeFloatBuffer)
 							{

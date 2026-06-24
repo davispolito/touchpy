@@ -1,4 +1,7 @@
 #include "toplinkpy.h"
+
+#ifndef TOUCHPY_MACOS
+
 #include "toplink.h"
 
 #include <nanobind/nanobind.h>
@@ -428,3 +431,12 @@ initTopLinkBindings(nb::module_& m)
 
 
 }
+
+#else
+
+#include <nanobind/nanobind.h>
+namespace nb = nanobind;
+
+void initTopLinkBindings(nb::module_& m) {}
+
+#endif // TOUCHPY_MACOS

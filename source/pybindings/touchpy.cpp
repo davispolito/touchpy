@@ -68,7 +68,9 @@ nb::dict getDLPackCapsuleInfo(nb::ndarray<> array)
 }
 
 extern void initCompBindings(nb::module_& m);
+#ifndef TOUCHPY_MACOS
 extern void initTopLinkBindings(nb::module_& m);
+#endif
 extern void initChopLinkBindings(nb::module_& m);
 extern void initDatLinkBindings(nb::module_& m);
 extern void initParLinkBindings(nb::module_& m);
@@ -96,7 +98,9 @@ NB_MODULE(touchpy, m)
 
 
 	initCompBindings(m);
+#ifndef TOUCHPY_MACOS
 	initTopLinkBindings(m);
+#endif
 	initChopLinkBindings(m);
 	initDatLinkBindings(m);
 	initParLinkBindings(m);
