@@ -41,6 +41,11 @@ Comp::initComp()
 	if (!(compFlags_ & CompFlagBits::CudaDisable)) cudaInit();
 #endif
 	initInstance();
+#ifdef TOUCHPY_MACOS
+	associateDefaultMetalContext(instance_);
+	inMetalTopLinks_  = std::make_unique<InMetalTopLinks>(instance_);
+	outMetalTopLinks_ = std::make_unique<OutMetalTopLinks>(instance_);
+#endif
 }
 
 Comp::~Comp()
@@ -842,7 +847,18 @@ Comp::frameRate() const
 	return rate;
 }
 
-std::string 
+std::vector<int32_t>
+Comp::supportedTextureTypes() const
+{
+	std::vector<TETextureType> types(4);
+	int32_t count = static_cast<int32_t>(types.size());
+	while (TEInstanceGetSupportedTextureTypes(instance_, types.data(), &count) == TEResultInsufficientMemory)
+		types.resize(count);
+	types.resize(count);
+	return std::vector<int32_t>(types.begin(), types.end());
+}
+
+std::string
 Comp::configuredEnginePath() const
 {
 	TouchObject<TEString> str;
@@ -853,7 +869,7 @@ Comp::configuredEnginePath() const
 		return std::string();
 }
 
-void 
+void
 Comp::start()
 {
 	TEResult result = TEInstanceResume(instance_);
@@ -862,6 +878,8 @@ Comp::start()
 		spdlog::error("Failed to resume TEInstance: {}", TEResultGetDescription(result));
 		throw std::runtime_error("Failed to resume TEInstance");
 	}
+
+	instanceResumed_ = true;
 
 	if (compFlags_ & CompFlagBits::InternalTime && compFlags_ & CompFlagBits::AutoUpdate && !updateLoopRunning_)
 	{
@@ -877,9 +895,12 @@ Comp::start()
 	if (onStartCallback_) onStartCallback_(onStartData_);
 }
 
-void 
+void
 Comp::stop()
 {
+	if (!instanceResumed_) return;
+	instanceResumed_ = false;
+
 	if (compFlags_ & CompFlagBits::InternalTime && compFlags_ & CompFlagBits::AutoUpdate)
 	{
 		stopUpdate();
@@ -1121,6 +1142,12 @@ Comp::applyOutputTextureChange()
 		auto& topLink = *outTopLinks_->getLinkByIdentifier(identifier);
 		topLink.onOutputTextureChange();
 	}
+#else
+	for (const auto& identifier : changedOutputTextures_)
+	{
+		auto* link = outMetalTopLinks_->getLinkByIdentifier(identifier);
+		if (link) link->onOutputTextureChange();
+	}
 #endif
 }
 
@@ -1191,6 +1218,9 @@ Comp::applyLayoutChange()
 #ifndef TOUCHPY_MACOS
 	inTopLinks_ = std::make_unique<InTopLinks>(instance_, renderer_->teContext(), physicalDevice_, device_, cudaStream_);
 	outTopLinks_ = std::make_unique<OutTopLinks>(instance_, renderer_->teContext(), physicalDevice_, device_, cudaStream_);
+#else
+	inMetalTopLinks_  = std::make_unique<InMetalTopLinks>(instance_);
+	outMetalTopLinks_ = std::make_unique<OutMetalTopLinks>(instance_);
 #endif
 
 	inChopLinks_ = std::make_unique<InChopLinks>(instance_);
@@ -1242,6 +1272,14 @@ Comp::applyLayoutChange()
 									outTopLinks_->addLink(info);
 									(*outTopLinks_)[outTopLinks_->size() - 1].setRequiresCudaMemLock(asyncActive_);
 								}
+							}
+#else
+							if (info->type == TELinkTypeTexture)
+							{
+								if (info->scope == TEScopeInput)
+									inMetalTopLinks_->addLink(info);
+								else if (info->scope == TEScopeOutput)
+									outMetalTopLinks_->addLink(info);
 							}
 #endif
 

@@ -7,6 +7,8 @@
 #include "texture.h"
 #include "common/cuda_helpers.h"
 #include "toplink.h"
+#else
+#include "metaltoplink.h"
 #endif
 
 #include "choplink.h"
@@ -62,6 +64,9 @@ public:
 #ifndef TOUCHPY_MACOS
 	InTopLinks&        inputTopLinks()  { return *inTopLinks_; }
 	OutTopLinks&       outputTopLinks() { return *outTopLinks_; }
+#else
+	InMetalTopLinks&  inputTopLinks()  { return *inMetalTopLinks_; }
+	OutMetalTopLinks& outputTopLinks() { return *outMetalTopLinks_; }
 #endif
 	InChopLinks&       inChopLinks()    { return *inChopLinks_; }
 	OutChopLinks&      outChopLinks()   { return *outChopLinks_; }
@@ -105,6 +110,8 @@ public:
 	uint8_t cudaDeviceIndex() const { return cudaDevice_; }
 #endif
 	CompFlags flags() const { return compFlags_; }
+
+	std::vector<int32_t> supportedTextureTypes() const;
 
 	// for internal use only, not for python bindings
 	//-----------------------------------------------------------------------------------------------------------------
@@ -176,6 +183,9 @@ private:
 	VkFence                   submitFence_          { VK_NULL_HANDLE };
 	cudaStream_t              cudaStream_           { nullptr };
 	int                       cudaDevice_           { -1 };
+#else
+	std::unique_ptr<InMetalTopLinks>  inMetalTopLinks_;
+	std::unique_ptr<OutMetalTopLinks> outMetalTopLinks_;
 #endif
 
 	std::vector<std::string>           changedOutputTextures_;
@@ -194,6 +204,7 @@ private:
 
 
 	bool         updateLoopRunning_      { false };
+	bool         instanceResumed_        { false };
 
 	CallbackFunc onLoadedCallback_       { nullptr };
 	CallbackData onLoadedData_           { nullptr };
