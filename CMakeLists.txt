@@ -46,8 +46,7 @@ list(FILTER CPP_SOURCES EXCLUDE REGEX ".*main\.cpp$")
 if(TOUCHPY_MACOS)
     # Exclude GPU-specific subtrees: Vulkan renderer (vri/), CUDA memory, texture
     # interop, and TOP link — none compile without CUDA/Vulkan SDK headers.
-    # Source-level #ifdef __APPLE__ guards in comp.h / toplink.h are the follow-on
-    # task; these CMake exclusions define the macOS translation unit boundary.
+    # source/metaltoplink.mm provides the macOS Metal TOP path instead.
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/vri/.*")
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/renderer\.(cpp|h)$")
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/texture\.(cpp|h)$")
@@ -58,6 +57,9 @@ if(TOUCHPY_MACOS)
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/cudaflags\.h$")
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*/deviceinfo\.h$")
     list(FILTER CPP_SOURCES EXCLUDE REGEX ".*common/cuda_helpers\.h$")
+    # Add Obj-C++ Metal sources (.mm files not picked up by the *.cpp glob above)
+    file(GLOB_RECURSE MM_SOURCES "${SOURCE_DIR}/*.mm")
+    list(APPEND CPP_SOURCES ${MM_SOURCES})
 else()
     file(GLOB_RECURSE CUDA_SOURCES "${SOURCE_DIR}/*.cu" "${SOURCE_DIR}/*.cuh")
 endif()

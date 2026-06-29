@@ -94,8 +94,8 @@ comp = tp.Comp(tox_path, flags=tp.CompFlags.INTERNAL_TIME_AUTO, fps=60, device=0
 | `in_dats` | `InDatLinks` | ✓ |
 | `out_dats` | `OutDatLinks` | ✓ |
 | `par` | `ParLinkCollection` | ✓ |
-| `in_tops` | `InTopLinks` | Windows only |
-| `out_tops` | `OutTopLinks` | Windows only |
+| `in_tops` | `InTops` (macOS) / `InTopLinks` (Windows) | ✓ |
+| `out_tops` | `OutTops` (macOS) / `OutTopLinks` (Windows) | ✓ |
 
 Links are indexed by name (string) or integer index: `comp.in_chops["myChannel"]` or `comp.in_chops[0]`.
 
@@ -175,9 +175,56 @@ Concrete ParLink subtypes (dispatched automatically by type + intent + count):
 | `ColorParLink` | RGBA (intent=ColorRGBA) | `Color` |
 | `MenuParLink` | Int with choices | `int` (index) |
 
-### TOP Links (Windows only)
+### TOP Links
 
-`in_tops` / `out_tops` are excluded on macOS (`#ifndef TOUCHPY_MACOS`). Texture transfer uses CUDA + Vulkan interop; no Metal equivalent yet.
+#### macOS — Metal path
+
+`in_tops` returns `InTops`, `out_tops` returns `OutTops`. Textures travel as `id<MTLTexture>` handles (zero-copy GPU path) or as raw bytes via CPU readback.
+
+**Output TOP (`OutTop`)**
+
+```python
+comp.apply_value_changes()          # flush before reading
+out = comp.out_tops["myrender"]
+
+# GPU path — zero copy, valid until next apply_value_changes()
+handle = out.metal_texture_handle   # uintptr_t of id<MTLTexture>
+event  = out.shared_event_handle    # uintptr_t of MTLSharedEventHandle* (0 if none)
+val    = out.wait_value             # uint64_t semaphore wait value
+
+shape  = out.shape                  # (height, width, 4)
+fmt    = out.pixel_format           # MTLPixelFormat enum int
+
+# CPU readback — blocks until GPU work completes
+arr = out.numpy()                   # numpy uint8 array [H, W, 4]
+```
+
+GPU sync contract: if `shared_event_handle != 0`, your Metal command buffer must wait on that event at `wait_value` before sampling the texture. If you only access the texture after `frame_did_finish()` on the CPU (via `numpy()`), no explicit sync is needed — `getBytes` serializes automatically.
+
+**Input TOP (`InTop`)**
+
+```python
+comp.in_tops["mytop"].set_texture(
+    tex,            # uintptr_t of id<MTLTexture>
+    event=0,        # uintptr_t of MTLSharedEventHandle* (optional)
+    val=0,          # semaphore signal value (optional)
+)
+```
+
+**Container API (both `InTops` and `OutTops`)**
+
+```python
+tops.count            # int
+tops.names            # list[str]
+tops["name"]          # lookup by name
+tops[0]               # lookup by index
+```
+
+**Pixel format notes:** `numpy()` supports `BGRA8Unorm`, `RGBA8Unorm`, `BGRA8Unorm_sRGB`, `RGBA8Unorm_sRGB` (→ `uint8 [H,W,4]`). Float formats (`RGBA16Float`, `RGBA32Float`) return the raw bytes cast to `uint8` — reinterpret as `float16`/`float32` after slicing. Unsupported formats raise `RuntimeError`.
+
+#### Windows — CUDA/Vulkan path
+
+`in_tops` / `out_tops` use CUDA + Vulkan interop via `toplink.cpp`.
 
 ---
 

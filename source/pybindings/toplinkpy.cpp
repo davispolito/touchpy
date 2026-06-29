@@ -432,11 +432,103 @@ initTopLinkBindings(nb::module_& m)
 
 }
 
-#else
+#else // TOUCHPY_MACOS
+
+#include "metaltoplink.h"
 
 #include <nanobind/nanobind.h>
-namespace nb = nanobind;
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/array.h>
+#include <nanobind/ndarray.h>
 
-void initTopLinkBindings(nb::module_& m) {}
+namespace nb = nanobind;
+using namespace nb::literals;
+
+void initTopLinkBindings(nb::module_& m)
+{
+    // ------------------------------------------------------------------
+    // OutMetalTopLink / OutMetalTopLinks
+    // ------------------------------------------------------------------
+    nb::class_<OutMetalTopLink> outTop(m, "OutTop");
+    outTop.doc() = "An output TOP link from a TouchDesigner component (macOS Metal path)";
+    outTop
+        .def_prop_ro("metal_texture_handle",
+            &OutMetalTopLink::metalTextureHandle,
+            "id<MTLTexture> as uintptr_t. Zero-cost GPU handle. "
+            "Wait on shared_event_handle/wait_value before GPU access.")
+        .def_prop_ro("shared_event_handle",
+            &OutMetalTopLink::sharedEventHandle,
+            "MTLSharedEventHandle* as uintptr_t for GPU-GPU sync (0 if none).")
+        .def_prop_ro("wait_value",
+            &OutMetalTopLink::waitValue,
+            "Semaphore wait value paired with shared_event_handle.")
+        .def_prop_ro("shape",
+            &OutMetalTopLink::shape,
+            "[height, width, 4]")
+        .def_prop_ro("pixel_format",
+            &OutMetalTopLink::pixelFormat,
+            "MTLPixelFormat enum value of the underlying texture.")
+        .def("numpy",
+            [](OutMetalTopLink& self) {
+                auto raw = self.readback();
+                if (raw.empty())
+                    throw std::runtime_error("readback() returned empty — unsupported pixel format or no texture");
+                auto sh = self.shape();
+                auto* buf = new std::vector<uint8_t>(std::move(raw));
+                nb::capsule owner(buf, [](void* p) noexcept {
+                    delete static_cast<std::vector<uint8_t>*>(p);
+                });
+                size_t h = sh[0], w = sh[1];
+                return nb::ndarray<nb::numpy, uint8_t, nb::shape<-1,-1,-1>>(
+                    buf->data(), { h, w, 4 }, owner);
+            },
+            "CPU readback → numpy uint8 array [H, W, 4]. "
+            "Call after frame_did_finish(). Blocks until GPU is done.");
+
+    nb::class_<OutMetalTopLinks> outTops(m, "OutTops");
+    outTops.doc() = "Container of OutTop objects (macOS)";
+    outTops
+        .def_prop_ro("count", [](OutMetalTopLinks& self) { return self.size(); })
+        .def_prop_ro("names",
+            [](OutMetalTopLinks& self) { return self.getLinkNames(); })
+        .def("__getitem__",
+            [](OutMetalTopLinks& self, const std::string& name) {
+                return self.getLinkByName(name);
+            }, nb::rv_policy::reference_internal)
+        .def("__getitem__",
+            [](OutMetalTopLinks& self, size_t index) {
+                return self.getLinkByIndex(index);
+            }, nb::rv_policy::reference_internal);
+
+    // ------------------------------------------------------------------
+    // InMetalTopLink / InMetalTopLinks
+    // ------------------------------------------------------------------
+    nb::class_<InMetalTopLink> inTop(m, "InTop");
+    inTop.doc() = "An input TOP link to a TouchDesigner component (macOS Metal path)";
+    inTop
+        .def("set_texture",
+            [](InMetalTopLink& self, uintptr_t tex, uintptr_t event, uint64_t val) {
+                self.setTexture(tex, event, val);
+            },
+            "tex"_a, "event"_a = (uintptr_t)0, "val"_a = (uint64_t)0,
+            "Set an MTLTexture as input. tex: uintptr_t of id<MTLTexture>. "
+            "event/val: MTLSharedEventHandle* and wait value for GPU sync (optional).");
+
+    nb::class_<InMetalTopLinks> inTops(m, "InTops");
+    inTops.doc() = "Container of InTop objects (macOS)";
+    inTops
+        .def_prop_ro("count", [](InMetalTopLinks& self) { return self.size(); })
+        .def_prop_ro("names",
+            [](InMetalTopLinks& self) { return self.getLinkNames(); })
+        .def("__getitem__",
+            [](InMetalTopLinks& self, const std::string& name) {
+                return self.getLinkByName(name);
+            }, nb::rv_policy::reference_internal)
+        .def("__getitem__",
+            [](InMetalTopLinks& self, size_t index) {
+                return self.getLinkByIndex(index);
+            }, nb::rv_policy::reference_internal);
+}
 
 #endif // TOUCHPY_MACOS

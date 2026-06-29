@@ -3,6 +3,7 @@
 
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/vector.h>
 #include <nanobind/operators.h>
 
 namespace nb = nanobind;
@@ -129,16 +130,15 @@ void initCompBindings(nb::module_& m)
 		.def_prop_ro("cuda_device",    &Comp::cudaDeviceIndex, cuda_deviceDoc, nb::rv_policy::reference_internal)
 #endif
 		.def_prop_ro("flags",		   [](Comp& self) { return self.flags()(); }, flagsDoc, nb::rv_policy::reference_internal) // return the flags as an int
-#ifndef TOUCHPY_MACOS
-		.def_prop_ro("in_tops",        &Comp::inputTopLinks, in_topsDoc, nb::rv_policy::reference_internal)
-		.def_prop_ro("out_tops",       &Comp::outputTopLinks,out_topsDoc, nb::rv_policy::reference_internal)
-#endif
+		.def_prop_ro("in_tops",        &Comp::inputTopLinks,  in_topsDoc,  nb::rv_policy::reference_internal)
+		.def_prop_ro("out_tops",       &Comp::outputTopLinks, out_topsDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("in_chops",       &Comp::inChopLinks, in_chopsDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("out_chops",      &Comp::outChopLinks, out_chopsDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("in_dats",        &Comp::inDatLinks, in_datsDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("out_dats",       &Comp::outDatLinks, out_datsDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("par",            &Comp::parLinks, parDoc, nb::rv_policy::reference_internal)
 		.def_prop_ro("rate", [](Comp& self) -> float { return self.frameRate(); }, frame_rateDoc)
+		.def("supported_texture_types", &Comp::supportedTextureTypes, "Returns TETextureType enum values (3=IOSurface, 5=Metal)")
 #ifndef TOUCHPY_MACOS
 		.def("cuda_stream", [](Comp& self) -> uintptr_t { return reinterpret_cast<uintptr_t>(self.cudaStream()); }, cuda_streamDoc, nb::rv_policy::reference_internal)
 #endif

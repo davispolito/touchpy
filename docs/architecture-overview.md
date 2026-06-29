@@ -14,7 +14,8 @@ Python user code
 touchpy (nanobind module)          ← source/pybindings/touchpy.cpp
   ├─ Comp                          ← source/pybindings/comppy.cpp
   ├─ ChopLink / DatLink / ParLink  ← source/pybindings/{chop,dat,par}linkpy.cpp
-  └─ TopLink (Windows only)        ← source/pybindings/toplinkpy.cpp
+  ├─ TopLink (macOS: OutTop/InTop) ← source/pybindings/toplinkpy.cpp  (#else branch)
+  └─ TopLink (Windows: OutTopLink) ← source/pybindings/toplinkpy.cpp  (#ifndef branch)
        │
        ▼
 C++ core (source/)
@@ -24,7 +25,8 @@ C++ core (source/)
   ├─ ChopLink    (choplink.h)      — float buffer I/O via TEFloatBuffer
   ├─ DatLink     (datlink.h)       — table/string I/O via TEObject
   ├─ ParLink     (parlink.h)       — parameter set/get, full type hierarchy
-  └─ TopLink     (toplink.h)       — texture I/O (Windows/CUDA only)
+  ├─ MetalTopLink (metaltoplink.h/.mm) — texture I/O (macOS/Metal)
+  └─ TopLink      (toplink.h)         — texture I/O (Windows/CUDA only)
        │
        ▼
 TouchEngine SDK
@@ -82,7 +84,18 @@ The `dev-macos` branch ports from Windows (CUDA + Vulkan) to macOS (Metal + Foun
 - `source/renderer.cpp/.h`, `texture.cpp/.h`, `cudamemory.cpp/.h`
 - `source/toplink.cpp/.h`, `copykernels.cu/.cuh`
 - `source/cudadatatypes.h`, `cudaflags.h`, `deviceinfo.h`, `common/cuda_helpers.h`
-- `initTopLinkBindings()` — TOP link Python bindings
+
+**macOS TOP implementation (`source/metaltoplink.h` / `.mm`):**
+
+`metaltoplink.h` declares a pure C++ interface (no Obj-C); `metaltoplink.mm` compiles as Obj-C++ and contains all `Metal/Metal.h` imports. This boundary is enforced by CMake: `*.mm` files are globbed separately and compiled with `OBJCXX`.
+
+Key design points:
+- `associateDefaultMetalContext()` — called once in `Comp::initComp()` after `TEInstanceCreate`; creates a `TEMetalContext` for `MTLCreateSystemDefaultDevice()` and associates it with the instance. TouchEngine retains the context; the local `TouchObject<TEMetalContext>` destructs immediately.
+- `MetalTopLink` base — holds raw `TEMetalTexture*` and `TEMetalSemaphore*` retained via `TERetain`/`TERelease` (not `TouchObject<>`, because those types are not in `TouchIsMemberOf`).
+- Ownership transfer protocol — when TE fires a value-change for an output TOP, the previous texture is returned to TE via `TEInstanceAddTextureTransfer` before the new one is retained. This matches the pattern in the Hello TouchEngine example.
+- `OutMetalTopLink::metalTextureHandle()` — bridges `id<MTLTexture>` to `uintptr_t` via `(__bridge void*)` for zero-cost Python handoff.
+- `OutMetalTopLink::readback()` — calls `[MTLTexture getBytes:...]` directly; on Apple Silicon unified memory this is near-zero cost for shared-storage textures.
+- `InMetalTopLink::setTexture()` — wraps a caller-supplied `id<MTLTexture>` in `TEMetalTextureCreate`, calls `TEInstanceLinkSetTextureValue`, and optionally adds a transfer with a `TEMetalSemaphore` for GPU-GPU sync.
 
 **macOS link line:** `TouchEngine.framework`, `Metal`, `Foundation`, `spdlog`
 
