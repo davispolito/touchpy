@@ -84,8 +84,12 @@ codesign --force --deep --sign - external/TouchEngine-macOS/TouchEngine.framewor
 
 ```bash
 # From repo root, after building touchpy
-DYLD_FRAMEWORK_PATH=external/TouchEngine-macOS .venv/bin/python -m pytest test/pytest/ -v
+scripts/test-macos-runtime.sh -v
 ```
+
+The script exports `DYLD_FRAMEWORK_PATH=external/TouchEngine-macOS` and `PYTHONPATH=build` before invoking `.venv/bin/python -m pytest`. Override `PYTHON_BIN`, `BUILD_DIR`, or `TOUCHENGINE_DIR` when testing a different build.
+
+Metal/TouchEngine runtime tests need direct access to the local GPU and framework resources. Sandboxed command runners can make `MTLCreateSystemDefaultDevice()` return nil even when the machine has a valid Metal device; run this script from a normal local shell or an unsandboxed automation context.
 
 ### macOS test status (verified 2026-06-24)
 
@@ -93,6 +97,7 @@ DYLD_FRAMEWORK_PATH=external/TouchEngine-macOS .venv/bin/python -m pytest test/p
 |-------|--------|
 | `test_comp_construct.py` | 6/6 pass |
 | `test_pars.py` | 11/12 pass — `test_stop` fails (pre-existing upstream double-stop bug, not a port regression) |
+| `test_tops.py` | 8/8 pass — requires Metal/TouchEngine runtime access |
 
 ---
 
@@ -103,10 +108,30 @@ DYLD_FRAMEWORK_PATH=external/TouchEngine-macOS .venv/bin/python -m pytest test/p
 | File | Purpose |
 |------|---------|
 | `test.tox` | TouchDesigner component loaded by the pytest suite |
+| `test_top.tox` | Minimal Constant TOP -> Out TOP fixture for TOP readback tests |
 | `parvalues.json` | Expected parameter values used as `ref` fixture in assertions |
 | `modules/TestExt.py` | TouchDesigner Python extension wired into `test.tox` |
 
 The `.tox` is the ground truth for integration tests — parameter names and expected values in `parvalues.json` must stay in sync with whatever is defined in `test.tox`.
+
+---
+
+## TouchDesigner Test Harness
+
+**Location:** `test-template/`
+
+`test-template/td-template.toe` is a minimal TouchDesigner authoring harness, copied from the same td-template pattern used by `td-tools`. Use it when creating or maintaining `.tox` fixtures for the pytest suite, including `test/tox/test_top.tox`.
+
+Tracked harness files:
+
+| File | Purpose |
+|------|---------|
+| `test-template/td-template.toe` | TouchDesigner project for authoring test fixtures |
+| `test-template/Embody-v6.0.57.tox` | Embody component used by the harness |
+| `test-template/TDPyEnvManagerContext.yaml` | TD Python environment context; includes `../td-tools/src` for helper imports |
+| `.embody/project.json` | Embody project metadata for this repo |
+
+Generated files such as `test-template/.venv/`, `test-template/logs/`, `test-template/TDImportCache/`, and `.mcp.json` are intentionally ignored.
 
 ---
 
@@ -117,4 +142,4 @@ The `.tox` is the ground truth for integration tests — parameter names and exp
 | macOS | `TouchEngine.framework` at `external/TouchEngine-macOS/` (submodule, init with `git submodule update --init`) |
 | Windows | TouchDesigner installation discoverable on PATH, or `td_path` passed to `Comp()` |
 | Both | Python venv with `touchpy` built and importable |
-| pytest only | `keyboard` package (`uv pip install keyboard`) — optional interactive escape; silently skipped if unavailable or no OS access |
+| pytest only | `numpy` for TOP ndarray assertions; `keyboard` is optional interactive escape and silently skipped if unavailable or no OS access |

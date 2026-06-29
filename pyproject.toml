@@ -25,7 +25,7 @@ classifiers = [
 
 [project.optional-dependencies]
 examples = ["torch", "torchvision", "numpy"]
-dev = ["pytest", "sphinx", "furo", "sphinx-autoapi"]
+dev = ["pytest", "sphinx", "furo", "sphinx-autoapi", "numpy"]
 
 [project.urls]
 Documentation = "https://intentdev.github.io/touchpy/"

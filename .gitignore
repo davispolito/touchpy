@@ -58,3 +58,30 @@ CMakeUserPresets.json
 */models
 logs/
 *log.txt
+
+# TouchDesigner test-template ephemeral/generated files
+test-template/.venv/
+test-template/TDImportCache/
+test-template/Backup/
+test-template/logs/
+test-template/CrashAutoSave*
+test-template/*.toe.bak
+test-template/*.toe.lock
+test-template/td-template.[0-9]*.toe
+test-template/.mcp.json
+test-template/CLAUDE.md
+test-template/__pycache__/
+
+# Embody / Envoy generated state
+.mcp.json
+.embody/*
+!.embody/project.json
+
+# Embody / Envoy (auto-managed)
+Backup/
+CrashAutoSave*
+.venv/
+.claude/settings.local.json
+.claude/projects/
+__pycache__/
+.DS_Store
