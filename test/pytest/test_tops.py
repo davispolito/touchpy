@@ -68,6 +68,13 @@ def test_top_names_consistent_with_count(comp):
     assert len(comp.out_tops.names) == comp.out_tops.count
 
 
+def test_supported_texture_types_is_int_list(comp):
+    types = comp.supported_texture_types()
+
+    assert isinstance(types, list)
+    assert all(isinstance(texture_type, int) for texture_type in types)
+
+
 # ---------------------------------------------------------------------------
 # Readback — needs a tox with output TOPs.
 # ---------------------------------------------------------------------------
@@ -95,6 +102,31 @@ def test_top_fixture_discovers_output_link(top_comp):
     assert "out1" in top_comp.out_tops.names
 
 
+def test_top_fixture_out_tops_indexing_is_consistent(top_comp):
+    by_name = top_comp.out_tops["out1"]
+    by_index = top_comp.out_tops[0]
+
+    assert by_name.shape == by_index.shape
+    assert by_name.metal_texture_handle == by_index.metal_texture_handle
+
+
+def test_top_fixture_initial_texture_state_is_empty(top_comp):
+    top = top_comp.out_tops["out1"]
+
+    assert top.shape == [0, 0, 4]
+    assert top.metal_texture_handle == 0
+    assert top.shared_event_handle == 0
+    assert top.wait_value == 0
+    assert top.pixel_format == 0
+
+
+def test_top_numpy_before_frame_raises_clear_error(top_comp):
+    top = top_comp.out_tops["out1"]
+
+    with pytest.raises(RuntimeError, match="readback\\(\\) returned empty"):
+        top.numpy()
+
+
 def test_top_frame_start_requires_resume(top_comp):
     assert top_comp.start_next_frame() is False
 
@@ -106,6 +138,15 @@ def test_resumed_top_frame_produces_texture(rendered_top_comp):
     h, w, _ = top.shape
     assert (h, w) == (64, 64)
     assert top.metal_texture_handle
+
+
+def test_resumed_top_sync_metadata_is_numeric(rendered_top_comp):
+    top = rendered_top_comp.out_tops["out1"]
+
+    assert isinstance(top.metal_texture_handle, int)
+    assert isinstance(top.shared_event_handle, int)
+    assert isinstance(top.wait_value, int)
+    assert isinstance(top.pixel_format, int)
 
 
 def test_out_top_numpy_readback(rendered_top_comp):

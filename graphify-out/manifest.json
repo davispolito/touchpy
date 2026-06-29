@@ -1,0 +1,912 @@
+{
+  "/Users/davispolito/dev/touchpy/CMakePresets.json": {
+    "mtime": 1781664641.736061,
+    "ast_hash": "43682c9a00ab4149ae885d7667b1ab8f",
+    "semantic_hash": "43682c9a00ab4149ae885d7667b1ab8f"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/conf.py": {
+    "mtime": 1781664641.737821,
+    "ast_hash": "a89a6b4f492fdb39a75eab0b94a90d1b",
+    "semantic_hash": "a89a6b4f492fdb39a75eab0b94a90d1b"
+  },
+  "/Users/davispolito/dev/touchpy/examples/01_load_comp_basic.py": {
+    "mtime": 1781664641.7386694,
+    "ast_hash": "1597c5f36804033a421e3447dcbbf15d",
+    "semantic_hash": "1597c5f36804033a421e3447dcbbf15d"
+  },
+  "/Users/davispolito/dev/touchpy/examples/02_load_comp.py": {
+    "mtime": 1781664641.7387323,
+    "ast_hash": "f20b9af8c4767353d36e0e351e96306d",
+    "semantic_hash": "f20b9af8c4767353d36e0e351e96306d"
+  },
+  "/Users/davispolito/dev/touchpy/examples/03_set_pars.py": {
+    "mtime": 1781664641.738929,
+    "ast_hash": "97869bcb75273848e46a07a88ea801cd",
+    "semantic_hash": "97869bcb75273848e46a07a88ea801cd"
+  },
+  "/Users/davispolito/dev/touchpy/examples/04_chops.py": {
+    "mtime": 1781664641.7391298,
+    "ast_hash": "d4fe6c32826ee3cc00050ea1d27b46cd",
+    "semantic_hash": "d4fe6c32826ee3cc00050ea1d27b46cd"
+  },
+  "/Users/davispolito/dev/touchpy/examples/05_dats.py": {
+    "mtime": 1781664641.7392042,
+    "ast_hash": "903c7dc2e1df077b7d3404ff7f39ec59",
+    "semantic_hash": "903c7dc2e1df077b7d3404ff7f39ec59"
+  },
+  "/Users/davispolito/dev/touchpy/examples/06_tops.py": {
+    "mtime": 1781664641.7392886,
+    "ast_hash": "624c97bea5d4f3738e75c4a78eaa6714",
+    "semantic_hash": "624c97bea5d4f3738e75c4a78eaa6714"
+  },
+  "/Users/davispolito/dev/touchpy/examples/07_on_loaded.py": {
+    "mtime": 1781664641.7393694,
+    "ast_hash": "84acca3a9476f3eed6bcf7ba1cd8600e",
+    "semantic_hash": "84acca3a9476f3eed6bcf7ba1cd8600e"
+  },
+  "/Users/davispolito/dev/touchpy/examples/08_on_loaded_async.py": {
+    "mtime": 1781664641.7394266,
+    "ast_hash": "bd6e53bf2845f698d6f9bfafdfad7d0d",
+    "semantic_hash": "bd6e53bf2845f698d6f9bfafdfad7d0d"
+  },
+  "/Users/davispolito/dev/touchpy/examples/09_concurrent_comps.py": {
+    "mtime": 1781664641.7395031,
+    "ast_hash": "d442e91109482a3956e7422b7a93d188",
+    "semantic_hash": "d442e91109482a3956e7422b7a93d188"
+  },
+  "/Users/davispolito/dev/touchpy/examples/10_external_time.py": {
+    "mtime": 1781664641.739575,
+    "ast_hash": "095f259d9423baee14a1df91d6c73c91",
+    "semantic_hash": "095f259d9423baee14a1df91d6c73c91"
+  },
+  "/Users/davispolito/dev/touchpy/examples/modules/image_filter.py": {
+    "mtime": 1781664641.7398725,
+    "ast_hash": "f4f04c3ce78d840ca1979eae5a0656ef",
+    "semantic_hash": "f4f04c3ce78d840ca1979eae5a0656ef"
+  },
+  "/Users/davispolito/dev/touchpy/examples/modules/utils.py": {
+    "mtime": 1781664641.7399337,
+    "ast_hash": "938ba398c28a532ec906749dd0a716c3",
+    "semantic_hash": "938ba398c28a532ec906749dd0a716c3"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/TouchEngineExample.sln": {
+    "mtime": 1781664643.791678,
+    "ast_hash": "d01630134bbceeacdbe1f15ac12a9327",
+    "semantic_hash": "d01630134bbceeacdbe1f15ac12a9327"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEAdapter.h": {
+    "mtime": 1781664643.7946117,
+    "ast_hash": "193a4fb3ca32369dfebf59d24cdb08af",
+    "semantic_hash": "193a4fb3ca32369dfebf59d24cdb08af"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEBase.h": {
+    "mtime": 1781664643.794665,
+    "ast_hash": "6cfad106cca7e8ecde793557c7e3c9bd",
+    "semantic_hash": "6cfad106cca7e8ecde793557c7e3c9bd"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TED3D.h": {
+    "mtime": 1781664643.7947292,
+    "ast_hash": "219c565b4fec3b6d4c58d5adc8de6476",
+    "semantic_hash": "219c565b4fec3b6d4c58d5adc8de6476"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TED3D11.h": {
+    "mtime": 1781664643.794886,
+    "ast_hash": "6476e333ca17551b4cb0d9fa6c2a1d82",
+    "semantic_hash": "6476e333ca17551b4cb0d9fa6c2a1d82"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TED3D12.h": {
+    "mtime": 1781664643.7949624,
+    "ast_hash": "cbb220f405b84570c1505e282435ac99",
+    "semantic_hash": "cbb220f405b84570c1505e282435ac99"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEFloatBuffer.h": {
+    "mtime": 1781664643.7950168,
+    "ast_hash": "bfafe758404e80a0426c20f2ce474fc6",
+    "semantic_hash": "bfafe758404e80a0426c20f2ce474fc6"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEGraphicsContext.h": {
+    "mtime": 1781664643.7950833,
+    "ast_hash": "5abf87eaee40b1c1c94a50aa5cbf4f6d",
+    "semantic_hash": "5abf87eaee40b1c1c94a50aa5cbf4f6d"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEInstance.h": {
+    "mtime": 1781664643.7951968,
+    "ast_hash": "8b97b286e23f3d0a4e2661d4d18057af",
+    "semantic_hash": "8b97b286e23f3d0a4e2661d4d18057af"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEObject.h": {
+    "mtime": 1781664643.7952664,
+    "ast_hash": "6edc8b1f657c4aa9323a4296e5000519",
+    "semantic_hash": "6edc8b1f657c4aa9323a4296e5000519"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEOpenGL.h": {
+    "mtime": 1781664643.795327,
+    "ast_hash": "30345a2f7646f374287436b3c789520b",
+    "semantic_hash": "30345a2f7646f374287436b3c789520b"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEResult.h": {
+    "mtime": 1781664643.795396,
+    "ast_hash": "200efc073a13c260fe5858feadc22b52",
+    "semantic_hash": "200efc073a13c260fe5858feadc22b52"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TESemaphore.h": {
+    "mtime": 1781664643.795456,
+    "ast_hash": "2c18330fecc19a4201bca654654fcfe8",
+    "semantic_hash": "2c18330fecc19a4201bca654654fcfe8"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TETable.h": {
+    "mtime": 1781664643.79551,
+    "ast_hash": "456a86c8d83b1c09b1044d514a2a1c9f",
+    "semantic_hash": "456a86c8d83b1c09b1044d514a2a1c9f"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TETexture.h": {
+    "mtime": 1781664643.7955616,
+    "ast_hash": "87e5ced65c717741ad5e5780c185bb97",
+    "semantic_hash": "87e5ced65c717741ad5e5780c185bb97"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TEVulkan.h": {
+    "mtime": 1781664643.7956512,
+    "ast_hash": "86d2cf57e2fe36266b88a7aad1e11542",
+    "semantic_hash": "86d2cf57e2fe36266b88a7aad1e11542"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TouchEngine.h": {
+    "mtime": 1781664643.7957213,
+    "ast_hash": "792963181333abb300cd8804cad6c46a",
+    "semantic_hash": "792963181333abb300cd8804cad6c46a"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/include/TouchEngine/TouchObject.h": {
+    "mtime": 1781664643.795784,
+    "ast_hash": "dcda93721a93afe9caf9b90de5fa9d89",
+    "semantic_hash": "dcda93721a93afe9caf9b90de5fa9d89"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Device.cpp": {
+    "mtime": 1781664643.7961822,
+    "ast_hash": "ab6832ad1b857d1f5687a5e25a0b525f",
+    "semantic_hash": "ab6832ad1b857d1f5687a5e25a0b525f"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Device.h": {
+    "mtime": 1781664643.7962356,
+    "ast_hash": "5800ae5df954db394d6b5ac94b612cf4",
+    "semantic_hash": "5800ae5df954db394d6b5ac94b612cf4"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Image.cpp": {
+    "mtime": 1781664643.7962978,
+    "ast_hash": "8fa398c9d763ab2a2dabccfcaafa26c7",
+    "semantic_hash": "8fa398c9d763ab2a2dabccfcaafa26c7"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Image.h": {
+    "mtime": 1781664643.7963681,
+    "ast_hash": "5010a5949ec7560441bdba4bfcdf68d8",
+    "semantic_hash": "5010a5949ec7560441bdba4bfcdf68d8"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Renderer.cpp": {
+    "mtime": 1781664643.796471,
+    "ast_hash": "9ed5b1a4fc38f3abe07b8ce678af1141",
+    "semantic_hash": "9ed5b1a4fc38f3abe07b8ce678af1141"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Renderer.h": {
+    "mtime": 1781664643.796539,
+    "ast_hash": "05f72398a2fe52f2dd9d640c46c76588",
+    "semantic_hash": "05f72398a2fe52f2dd9d640c46c76588"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Texture.cpp": {
+    "mtime": 1781664643.7965949,
+    "ast_hash": "f35a4d95de253a99bee71d9f1c841ce9",
+    "semantic_hash": "f35a4d95de253a99bee71d9f1c841ce9"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11Texture.h": {
+    "mtime": 1781664643.796655,
+    "ast_hash": "0a49631c2d28b5ac72dfe6533369c96f",
+    "semantic_hash": "0a49631c2d28b5ac72dfe6533369c96f"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11VertexShader.cpp": {
+    "mtime": 1781664643.7967105,
+    "ast_hash": "22384235d33603c198f6188a5ede994d",
+    "semantic_hash": "22384235d33603c198f6188a5ede994d"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX11VertexShader.h": {
+    "mtime": 1781664643.7967556,
+    "ast_hash": "680d51f1249c3532a3ceb5e8a639f588",
+    "semantic_hash": "680d51f1249c3532a3ceb5e8a639f588"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Image.cpp": {
+    "mtime": 1781664643.7968085,
+    "ast_hash": "2cc582bb1dd866a2563701bd4c44c483",
+    "semantic_hash": "2cc582bb1dd866a2563701bd4c44c483"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Image.h": {
+    "mtime": 1781664643.7968516,
+    "ast_hash": "67fffcc7a1f02dad5d66f7d69fe0eebf",
+    "semantic_hash": "67fffcc7a1f02dad5d66f7d69fe0eebf"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Renderer.cpp": {
+    "mtime": 1781664643.7969422,
+    "ast_hash": "f68cbc02cd52d5cb3d05f472bdc7a2da",
+    "semantic_hash": "f68cbc02cd52d5cb3d05f472bdc7a2da"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Renderer.h": {
+    "mtime": 1781664643.79712,
+    "ast_hash": "6a4938c67df9bea76a883b80765b5d21",
+    "semantic_hash": "6a4938c67df9bea76a883b80765b5d21"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Texture.cpp": {
+    "mtime": 1781664643.7971923,
+    "ast_hash": "a998aee0ef0d540b5e1c4c340e450389",
+    "semantic_hash": "a998aee0ef0d540b5e1c4c340e450389"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Texture.h": {
+    "mtime": 1781664643.7972329,
+    "ast_hash": "79160c7c4a0423bd43cb2606486cd2d4",
+    "semantic_hash": "79160c7c4a0423bd43cb2606486cd2d4"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DX12Utility.h": {
+    "mtime": 1781664643.7972777,
+    "ast_hash": "fb5d4185808aa7cf1d452313eab116ca",
+    "semantic_hash": "fb5d4185808aa7cf1d452313eab116ca"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DXGIUtility.cpp": {
+    "mtime": 1781664643.7973235,
+    "ast_hash": "2718f75bae02f4d834f6d9a33af778f3",
+    "semantic_hash": "2718f75bae02f4d834f6d9a33af778f3"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DXGIUtility.h": {
+    "mtime": 1781664643.7973702,
+    "ast_hash": "86add784e586c6cefa60f1825d8ee070",
+    "semantic_hash": "86add784e586c6cefa60f1825d8ee070"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DocumentWindow.cpp": {
+    "mtime": 1781664643.7974567,
+    "ast_hash": "100ef14fc5e21803de0d94f5ef3ca6f3",
+    "semantic_hash": "100ef14fc5e21803de0d94f5ef3ca6f3"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/DocumentWindow.h": {
+    "mtime": 1781664643.7975128,
+    "ast_hash": "e4fbc23586057520fb6105ee86d6818f",
+    "semantic_hash": "e4fbc23586057520fb6105ee86d6818f"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Drawable.cpp": {
+    "mtime": 1781664643.7975738,
+    "ast_hash": "fe4923c3b10390d0f3763f51a6e048e6",
+    "semantic_hash": "fe4923c3b10390d0f3763f51a6e048e6"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Drawable.h": {
+    "mtime": 1781664643.7976413,
+    "ast_hash": "c69f3b7645d3152b8a029a8a6edf70c2",
+    "semantic_hash": "c69f3b7645d3152b8a029a8a6edf70c2"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/FileReader.cpp": {
+    "mtime": 1781664643.7976973,
+    "ast_hash": "96aa303a4079489efa6cce5f99284e57",
+    "semantic_hash": "96aa303a4079489efa6cce5f99284e57"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/FileReader.h": {
+    "mtime": 1781664643.7977633,
+    "ast_hash": "c380c472ddd6b6706eb58b4fa98acfb3",
+    "semantic_hash": "c380c472ddd6b6706eb58b4fa98acfb3"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/GL/glew.h": {
+    "mtime": 1781664643.798836,
+    "ast_hash": "b4eb472113d51f44588e3cf4fd1925ac",
+    "semantic_hash": "b4eb472113d51f44588e3cf4fd1925ac"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/GL/wglew.h": {
+    "mtime": 1781664643.799359,
+    "ast_hash": "546e80a9213782f59a06c75bd3c4f8eb",
+    "semantic_hash": "546e80a9213782f59a06c75bd3c4f8eb"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLImage.cpp": {
+    "mtime": 1781664643.79943,
+    "ast_hash": "94191956b4875e5b50ad94916ef1292a",
+    "semantic_hash": "94191956b4875e5b50ad94916ef1292a"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLImage.h": {
+    "mtime": 1781664643.7994819,
+    "ast_hash": "530d970be35e0f24abc148f5fdc78dad",
+    "semantic_hash": "530d970be35e0f24abc148f5fdc78dad"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLProgram.cpp": {
+    "mtime": 1781664643.7995365,
+    "ast_hash": "89793046e456ad628e26cdf005617e7a",
+    "semantic_hash": "89793046e456ad628e26cdf005617e7a"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLProgram.h": {
+    "mtime": 1781664643.7995927,
+    "ast_hash": "4da900343a153481581a944170d57851",
+    "semantic_hash": "4da900343a153481581a944170d57851"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLRenderer.cpp": {
+    "mtime": 1781664643.7996585,
+    "ast_hash": "1df71cee8787a6cee4d966ad77871fa2",
+    "semantic_hash": "1df71cee8787a6cee4d966ad77871fa2"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLRenderer.h": {
+    "mtime": 1781664643.7997067,
+    "ast_hash": "d84480764fe37c99b9d2346319381674",
+    "semantic_hash": "d84480764fe37c99b9d2346319381674"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLTexture.cpp": {
+    "mtime": 1781664643.7997606,
+    "ast_hash": "1bbfc3582aa44ff3a790843f02f565a8",
+    "semantic_hash": "1bbfc3582aa44ff3a790843f02f565a8"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/OpenGLTexture.h": {
+    "mtime": 1781664643.7998197,
+    "ast_hash": "4ebbec053be7e53fb58c841008ba1be6",
+    "semantic_hash": "4ebbec053be7e53fb58c841008ba1be6"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Renderer.cpp": {
+    "mtime": 1781664643.7998712,
+    "ast_hash": "dd4ba9a621ac878669f7941cb174ef82",
+    "semantic_hash": "dd4ba9a621ac878669f7941cb174ef82"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Renderer.h": {
+    "mtime": 1781664643.7999134,
+    "ast_hash": "b546d98d26083cb882136b2ba0cccb89",
+    "semantic_hash": "b546d98d26083cb882136b2ba0cccb89"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Strings.cpp": {
+    "mtime": 1781664643.7999568,
+    "ast_hash": "f0697220ad881250329159c07abd9fa5",
+    "semantic_hash": "f0697220ad881250329159c07abd9fa5"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/Strings.h": {
+    "mtime": 1781664643.8000045,
+    "ast_hash": "956e7dd1239ae7373da029e7e94459b9",
+    "semantic_hash": "956e7dd1239ae7373da029e7e94459b9"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/d3dx12.h": {
+    "mtime": 1781664643.8004093,
+    "ast_hash": "49ebdddddc916479b0adbe89106db427",
+    "semantic_hash": "49ebdddddc916479b0adbe89106db427"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/glew.c": {
+    "mtime": 1781664643.8014128,
+    "ast_hash": "4e13dacb402d9d7a4c66ef8fdb2467fb",
+    "semantic_hash": "4e13dacb402d9d7a4c66ef8fdb2467fb"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/resource.h": {
+    "mtime": 1781664643.8015165,
+    "ast_hash": "0a995d37105bd0cf0c10006b8055607a",
+    "semantic_hash": "0a995d37105bd0cf0c10006b8055607a"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/stdafx.cpp": {
+    "mtime": 1781664643.801849,
+    "ast_hash": "92666c1e3d54f39337fed2fd17f6170a",
+    "semantic_hash": "92666c1e3d54f39337fed2fd17f6170a"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/stdafx.h": {
+    "mtime": 1781664643.80191,
+    "ast_hash": "e4da19aa5938dca42a1065909b1a6ec2",
+    "semantic_hash": "e4da19aa5938dca42a1065909b1a6ec2"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/src/targetver.h": {
+    "mtime": 1781664643.801965,
+    "ast_hash": "0ee32c85c7df3fe7aa3c858478b0555c",
+    "semantic_hash": "0ee32c85c7df3fe7aa3c858478b0555c"
+  },
+  "/Users/davispolito/dev/touchpy/source/chopchannels.cpp": {
+    "mtime": 1781664641.740256,
+    "ast_hash": "2ce8291fecd6648decad412e00a00859",
+    "semantic_hash": "2ce8291fecd6648decad412e00a00859"
+  },
+  "/Users/davispolito/dev/touchpy/source/chopchannels.h": {
+    "mtime": 1781664641.7403378,
+    "ast_hash": "ef04e38b4df54489700102780bfa4311",
+    "semantic_hash": "ef04e38b4df54489700102780bfa4311"
+  },
+  "/Users/davispolito/dev/touchpy/source/choplink.cpp": {
+    "mtime": 1781664641.74042,
+    "ast_hash": "a8e12c6c79ecf9f2a71fe8900988950c",
+    "semantic_hash": "a8e12c6c79ecf9f2a71fe8900988950c"
+  },
+  "/Users/davispolito/dev/touchpy/source/choplink.h": {
+    "mtime": 1781664641.740499,
+    "ast_hash": "71d94a8fe6fcc7dabf99ecb030a6a5e3",
+    "semantic_hash": "71d94a8fe6fcc7dabf99ecb030a6a5e3"
+  },
+  "/Users/davispolito/dev/touchpy/source/color.h": {
+    "mtime": 1781664641.7405844,
+    "ast_hash": "b6dd3a3ca2189778f3899e8501e52de4",
+    "semantic_hash": "b6dd3a3ca2189778f3899e8501e52de4"
+  },
+  "/Users/davispolito/dev/touchpy/source/common/cuda_helpers.h": {
+    "mtime": 1781664641.7408192,
+    "ast_hash": "ecf9fa18e0b969bc62392e6d5c610dd2",
+    "semantic_hash": "ecf9fa18e0b969bc62392e6d5c610dd2"
+  },
+  "/Users/davispolito/dev/touchpy/source/common/flags.h": {
+    "mtime": 1781664641.7409,
+    "ast_hash": "0c0688f361cea9650dc3e69f37001d27",
+    "semantic_hash": "0c0688f361cea9650dc3e69f37001d27"
+  },
+  "/Users/davispolito/dev/touchpy/source/common/helpers.h": {
+    "mtime": 1781664641.740955,
+    "ast_hash": "8bfb4f440f2fa887e1049f8397be737a",
+    "semantic_hash": "8bfb4f440f2fa887e1049f8397be737a"
+  },
+  "/Users/davispolito/dev/touchpy/source/comp.cpp": {
+    "mtime": 1781664641.7410653,
+    "ast_hash": "6439b95f09a7a48461a057d878decf8b",
+    "semantic_hash": "6439b95f09a7a48461a057d878decf8b"
+  },
+  "/Users/davispolito/dev/touchpy/source/comp.h": {
+    "mtime": 1781664641.741136,
+    "ast_hash": "f329d8c82fed867fbe57b9c22390f600",
+    "semantic_hash": "f329d8c82fed867fbe57b9c22390f600"
+  },
+  "/Users/davispolito/dev/touchpy/source/compflags.h": {
+    "mtime": 1781664641.7411895,
+    "ast_hash": "3afe4dae11b1f49fca82e9d6d9186829",
+    "semantic_hash": "3afe4dae11b1f49fca82e9d6d9186829"
+  },
+  "/Users/davispolito/dev/touchpy/source/cudadatatypes.h": {
+    "mtime": 1781664641.7413828,
+    "ast_hash": "06cd707edde46936d0c842a0d4061860",
+    "semantic_hash": "06cd707edde46936d0c842a0d4061860"
+  },
+  "/Users/davispolito/dev/touchpy/source/cudaflags.h": {
+    "mtime": 1781664641.7414408,
+    "ast_hash": "fe8330dfe357f84ddeaed6826d8dcedc",
+    "semantic_hash": "fe8330dfe357f84ddeaed6826d8dcedc"
+  },
+  "/Users/davispolito/dev/touchpy/source/cudamemory.cpp": {
+    "mtime": 1781664641.7415,
+    "ast_hash": "795ea21eda4d44dc4f6bfa77037dcb9e",
+    "semantic_hash": "795ea21eda4d44dc4f6bfa77037dcb9e"
+  },
+  "/Users/davispolito/dev/touchpy/source/cudamemory.h": {
+    "mtime": 1781664641.741559,
+    "ast_hash": "a5f477ecc992a0e8748280231f10763f",
+    "semantic_hash": "a5f477ecc992a0e8748280231f10763f"
+  },
+  "/Users/davispolito/dev/touchpy/source/datlink.cpp": {
+    "mtime": 1781664641.7416203,
+    "ast_hash": "3249d76bc3fe6aad0aa8867fb7883310",
+    "semantic_hash": "3249d76bc3fe6aad0aa8867fb7883310"
+  },
+  "/Users/davispolito/dev/touchpy/source/datlink.h": {
+    "mtime": 1781664641.741672,
+    "ast_hash": "efa345f9072f7f054391f7b1e8a7762c",
+    "semantic_hash": "efa345f9072f7f054391f7b1e8a7762c"
+  },
+  "/Users/davispolito/dev/touchpy/source/dattable.cpp": {
+    "mtime": 1781664641.7417307,
+    "ast_hash": "6dae71cf86348bffc72ed4c629104d00",
+    "semantic_hash": "6dae71cf86348bffc72ed4c629104d00"
+  },
+  "/Users/davispolito/dev/touchpy/source/dattable.h": {
+    "mtime": 1781664641.741786,
+    "ast_hash": "3d650653037684bb0a03217ffe9a72e5",
+    "semantic_hash": "3d650653037684bb0a03217ffe9a72e5"
+  },
+  "/Users/davispolito/dev/touchpy/source/deviceinfo.h": {
+    "mtime": 1781664641.7418394,
+    "ast_hash": "dbfec6bfa7748a844928906adf2d3ba0",
+    "semantic_hash": "dbfec6bfa7748a844928906adf2d3ba0"
+  },
+  "/Users/davispolito/dev/touchpy/source/link.h": {
+    "mtime": 1781664641.7419024,
+    "ast_hash": "122dfd9efd9d22710ad983e2d451a0ec",
+    "semantic_hash": "122dfd9efd9d22710ad983e2d451a0ec"
+  },
+  "/Users/davispolito/dev/touchpy/source/links.h": {
+    "mtime": 1781664641.7420988,
+    "ast_hash": "e9cb9b39cbfbabc30eb4e54ed2bee6cc",
+    "semantic_hash": "e9cb9b39cbfbabc30eb4e54ed2bee6cc"
+  },
+  "/Users/davispolito/dev/touchpy/source/logging.cpp": {
+    "mtime": 1781664641.7421792,
+    "ast_hash": "6f90bef2e03721e126d5bdb1c5b523d7",
+    "semantic_hash": "6f90bef2e03721e126d5bdb1c5b523d7"
+  },
+  "/Users/davispolito/dev/touchpy/source/logging.h": {
+    "mtime": 1781664641.742266,
+    "ast_hash": "26e573f74e240d4bf8dabee38cd1a4ec",
+    "semantic_hash": "26e573f74e240d4bf8dabee38cd1a4ec"
+  },
+  "/Users/davispolito/dev/touchpy/source/parlink.h": {
+    "mtime": 1781664641.7423723,
+    "ast_hash": "f361f79831d47e0654eb8c74ccb95666",
+    "semantic_hash": "f361f79831d47e0654eb8c74ccb95666"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/choplinkpy.cpp": {
+    "mtime": 1781664641.74248,
+    "ast_hash": "cfee0c7144164a85554ffdc563985429",
+    "semantic_hash": "cfee0c7144164a85554ffdc563985429"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/choplinkpy.h": {
+    "mtime": 1781664641.7425497,
+    "ast_hash": "78eddbeb5b3b3264c12798bf787a0a33",
+    "semantic_hash": "78eddbeb5b3b3264c12798bf787a0a33"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/comppy.cpp": {
+    "mtime": 1781664641.7426298,
+    "ast_hash": "eed4c6dcaa2480f005cbe54d14047709",
+    "semantic_hash": "eed4c6dcaa2480f005cbe54d14047709"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/comppy.h": {
+    "mtime": 1781664641.7427018,
+    "ast_hash": "22b4de024c6c3625c5ed388dc685dddb",
+    "semantic_hash": "22b4de024c6c3625c5ed388dc685dddb"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/datlinkpy.cpp": {
+    "mtime": 1781664641.7427728,
+    "ast_hash": "75ee445a5034d65a418cacb87577ca5a",
+    "semantic_hash": "75ee445a5034d65a418cacb87577ca5a"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/datlinkpy.h": {
+    "mtime": 1781664641.742841,
+    "ast_hash": "bd75e4cacb7d14e015424380a334dbc4",
+    "semantic_hash": "bd75e4cacb7d14e015424380a334dbc4"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/parlinkpy.cpp": {
+    "mtime": 1781664641.7429302,
+    "ast_hash": "ea40c4d6c6c0c18d9450d1a06232b880",
+    "semantic_hash": "ea40c4d6c6c0c18d9450d1a06232b880"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/parlinkpy.h": {
+    "mtime": 1781664641.742984,
+    "ast_hash": "b5ad224e236fc4a36c19d3cfb71bb8da",
+    "semantic_hash": "b5ad224e236fc4a36c19d3cfb71bb8da"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/toplinkpy.cpp": {
+    "mtime": 1781664641.7430725,
+    "ast_hash": "d89f2360ae08e0bd0603cd842b057ec4",
+    "semantic_hash": "d89f2360ae08e0bd0603cd842b057ec4"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/toplinkpy.h": {
+    "mtime": 1781664641.7431195,
+    "ast_hash": "b5ad224e236fc4a36c19d3cfb71bb8da",
+    "semantic_hash": "b5ad224e236fc4a36c19d3cfb71bb8da"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/touchpy.cpp": {
+    "mtime": 1781664641.743177,
+    "ast_hash": "f39f60e001134ea3480efbee3a7bee3a",
+    "semantic_hash": "f39f60e001134ea3480efbee3a7bee3a"
+  },
+  "/Users/davispolito/dev/touchpy/source/pybindings/touchpy.h": {
+    "mtime": 1781664641.7432423,
+    "ast_hash": "a4998f9aa1bd182775a0338f54272fe4",
+    "semantic_hash": "a4998f9aa1bd182775a0338f54272fe4"
+  },
+  "/Users/davispolito/dev/touchpy/source/renderer.cpp": {
+    "mtime": 1781664641.743322,
+    "ast_hash": "2ef3718c42e7b83ea2ecd8c6ba2afd75",
+    "semantic_hash": "2ef3718c42e7b83ea2ecd8c6ba2afd75"
+  },
+  "/Users/davispolito/dev/touchpy/source/renderer.h": {
+    "mtime": 1781664641.7433875,
+    "ast_hash": "93333552a54f8d2518f703079d4da3cc",
+    "semantic_hash": "93333552a54f8d2518f703079d4da3cc"
+  },
+  "/Users/davispolito/dev/touchpy/source/teutils.h": {
+    "mtime": 1781664641.7434466,
+    "ast_hash": "69fb0cea88b9a320d957198163cfacbb",
+    "semantic_hash": "69fb0cea88b9a320d957198163cfacbb"
+  },
+  "/Users/davispolito/dev/touchpy/source/texture.cpp": {
+    "mtime": 1781664641.7436523,
+    "ast_hash": "02e530be056bd2342dcff5716008fef7",
+    "semantic_hash": "02e530be056bd2342dcff5716008fef7"
+  },
+  "/Users/davispolito/dev/touchpy/source/texture.h": {
+    "mtime": 1781664641.7437437,
+    "ast_hash": "c126e19c0b9af8698a62edfbac063d0d",
+    "semantic_hash": "c126e19c0b9af8698a62edfbac063d0d"
+  },
+  "/Users/davispolito/dev/touchpy/source/toplink.cpp": {
+    "mtime": 1781664641.7438266,
+    "ast_hash": "53c02af655da68fc727fa6a82aeab779",
+    "semantic_hash": "53c02af655da68fc727fa6a82aeab779"
+  },
+  "/Users/davispolito/dev/touchpy/source/toplink.h": {
+    "mtime": 1781664641.7439008,
+    "ast_hash": "09e8588590ceb471dac4910731eeaedc",
+    "semantic_hash": "09e8588590ceb471dac4910731eeaedc"
+  },
+  "/Users/davispolito/dev/touchpy/source/utils/utils.cpp": {
+    "mtime": 1781664641.7440007,
+    "ast_hash": "6c9549785d47fa9666424c6f79406b43",
+    "semantic_hash": "6c9549785d47fa9666424c6f79406b43"
+  },
+  "/Users/davispolito/dev/touchpy/source/utils/utils.h": {
+    "mtime": 1781664641.7440658,
+    "ast_hash": "dc9702c3c477d497c7a722c36be50ed8",
+    "semantic_hash": "dc9702c3c477d497c7a722c36be50ed8"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vk_mem_alloc.cpp": {
+    "mtime": 1781664641.7441785,
+    "ast_hash": "44ccfe1c09a8620d1bcd8c4f396a60ad",
+    "semantic_hash": "44ccfe1c09a8620d1bcd8c4f396a60ad"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri.cpp": {
+    "mtime": 1781664641.744294,
+    "ast_hash": "8ac53f30fa1fff02ea13b933f57c6115",
+    "semantic_hash": "8ac53f30fa1fff02ea13b933f57c6115"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri.h": {
+    "mtime": 1781664641.7443917,
+    "ast_hash": "cc4a49c5876f4bdedd8f5e12c16e9f61",
+    "semantic_hash": "cc4a49c5876f4bdedd8f5e12c16e9f61"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_commandbuffers.h": {
+    "mtime": 1781664641.7444625,
+    "ast_hash": "a0185c4471bc19590a11cb84ec51ce20",
+    "semantic_hash": "a0185c4471bc19590a11cb84ec51ce20"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_fencepool.h": {
+    "mtime": 1781664641.7445273,
+    "ast_hash": "ac1a5cd52f652804ab99644a814bf1cc",
+    "semantic_hash": "ac1a5cd52f652804ab99644a814bf1cc"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_initializers.h": {
+    "mtime": 1781664641.744635,
+    "ast_hash": "847ab1faa673d29f7e15dc8acad1d3a6",
+    "semantic_hash": "847ab1faa673d29f7e15dc8acad1d3a6"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_macros.h": {
+    "mtime": 1781664641.7447336,
+    "ast_hash": "b024d43378c5f00fc78153f53ef8a4c1",
+    "semantic_hash": "b024d43378c5f00fc78153f53ef8a4c1"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_queuefamilyindices.h": {
+    "mtime": 1781664641.7448094,
+    "ast_hash": "37ec810c6a308ec98f9a9cb47d2edce6",
+    "semantic_hash": "37ec810c6a308ec98f9a9cb47d2edce6"
+  },
+  "/Users/davispolito/dev/touchpy/source/vri/vri_semaphorepool.h": {
+    "mtime": 1781664641.7448726,
+    "ast_hash": "d711584bc5ae7b1f143d7228df435383",
+    "semantic_hash": "d711584bc5ae7b1f143d7228df435383"
+  },
+  "/Users/davispolito/dev/touchpy/src/touchpy/__init__.py": {
+    "mtime": 1781664641.7450166,
+    "ast_hash": "a268ca6560153a8639bfdb39c9a78034",
+    "semantic_hash": "a268ca6560153a8639bfdb39c9a78034"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/chopchannels_gtest.cpp": {
+    "mtime": 1781664641.7452788,
+    "ast_hash": "e44ab26c83aa4cf365f55bb67bf3fbaa",
+    "semantic_hash": "e44ab26c83aa4cf365f55bb67bf3fbaa"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/color_gtest.cpp": {
+    "mtime": 1781664641.7453585,
+    "ast_hash": "99b29a21b4a195ecb2661f563feb6be7",
+    "semantic_hash": "99b29a21b4a195ecb2661f563feb6be7"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/comp_gtest.cpp": {
+    "mtime": 1781664641.74543,
+    "ast_hash": "c8bc396efab65adc4d79c3769c80f40d",
+    "semantic_hash": "c8bc396efab65adc4d79c3769c80f40d"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/compflags_gtest.cpp": {
+    "mtime": 1781664641.7454937,
+    "ast_hash": "eca85144203db1bb8aad67b08c5b1eee",
+    "semantic_hash": "eca85144203db1bb8aad67b08c5b1eee"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/cudaflags_gtest.cpp": {
+    "mtime": 1781664641.7455454,
+    "ast_hash": "c45b087fc9816bec613730cedbf3ef20",
+    "semantic_hash": "c45b087fc9816bec613730cedbf3ef20"
+  },
+  "/Users/davispolito/dev/touchpy/test/gtest/logging_gtest.cpp": {
+    "mtime": 1781664641.7455897,
+    "ast_hash": "51a7b43f337a7bac90e3dc482f588747",
+    "semantic_hash": "51a7b43f337a7bac90e3dc482f588747"
+  },
+  "/Users/davispolito/dev/touchpy/test/pytest/conftest.py": {
+    "mtime": 1781664641.7457056,
+    "ast_hash": "f69b4793e90f2051f35a08e5fe6c9d59",
+    "semantic_hash": "f69b4793e90f2051f35a08e5fe6c9d59"
+  },
+  "/Users/davispolito/dev/touchpy/test/pytest/test_pars.py": {
+    "mtime": 1781664641.745888,
+    "ast_hash": "1f29471808910be269a54782c1c72bcd",
+    "semantic_hash": "1f29471808910be269a54782c1c72bcd"
+  },
+  "/Users/davispolito/dev/touchpy/test/tox/modules/TestExt.py": {
+    "mtime": 1781664641.7460337,
+    "ast_hash": "627dc81a6d8ccd3d716b9ce6dd78c105",
+    "semantic_hash": "627dc81a6d8ccd3d716b9ce6dd78c105"
+  },
+  "/Users/davispolito/dev/touchpy/test/tox/parvalues.json": {
+    "mtime": 1781664641.746107,
+    "ast_hash": "27a6f43eb9f5426993e1102d9d4f09b2",
+    "semantic_hash": "27a6f43eb9f5426993e1102d9d4f09b2"
+  },
+  "/Users/davispolito/dev/touchpy/.github/workflows/ci.yml": {
+    "mtime": 1781664641.7355497,
+    "ast_hash": "e49c0d0b3e4616e32fc5d500e69c8c02",
+    "semantic_hash": "e49c0d0b3e4616e32fc5d500e69c8c02"
+  },
+  "/Users/davispolito/dev/touchpy/.github/workflows/docs.yml": {
+    "mtime": 1781664641.7356157,
+    "ast_hash": "405658b3be60a3d1f4c623fc5babd6c6",
+    "semantic_hash": "405658b3be60a3d1f4c623fc5babd6c6"
+  },
+  "/Users/davispolito/dev/touchpy/.github/workflows/wheels.yml": {
+    "mtime": 1781664641.7357202,
+    "ast_hash": "a96aec09bc04d6da927f73d0ce5a43c4",
+    "semantic_hash": "a96aec09bc04d6da927f73d0ce5a43c4"
+  },
+  "/Users/davispolito/dev/touchpy/CMakeLists.txt": {
+    "mtime": 1781664641.7359867,
+    "ast_hash": "90f7172eb7d800217b3b8ea1f9b8352e",
+    "semantic_hash": "90f7172eb7d800217b3b8ea1f9b8352e"
+  },
+  "/Users/davispolito/dev/touchpy/LICENSE.md": {
+    "mtime": 1781664641.7361255,
+    "ast_hash": "bc1e064a53d12888f5310579d9534484",
+    "semantic_hash": "bc1e064a53d12888f5310579d9534484"
+  },
+  "/Users/davispolito/dev/touchpy/README.md": {
+    "mtime": 1781664641.736207,
+    "ast_hash": "b11cc2390f57f0cf3a920cbec9af4634",
+    "semantic_hash": "b11cc2390f57f0cf3a920cbec9af4634"
+  },
+  "/Users/davispolito/dev/touchpy/docs/NOTES.md": {
+    "mtime": 1781664705.7890887,
+    "ast_hash": "b6f8cb4bdbef7b99430146101db0f339",
+    "semantic_hash": "b6f8cb4bdbef7b99430146101db0f339"
+  },
+  "/Users/davispolito/dev/touchpy/docs/README.md": {
+    "mtime": 1781664641.7363768,
+    "ast_hash": "ce3fc9b977f2080c64f731aa865736a7",
+    "semantic_hash": "ce3fc9b977f2080c64f731aa865736a7"
+  },
+  "/Users/davispolito/dev/touchpy/docs/api-contract.md": {
+    "mtime": 1781664714.011122,
+    "ast_hash": "b9e08ee0cada9c07a48fa008d294dddd",
+    "semantic_hash": "b9e08ee0cada9c07a48fa008d294dddd"
+  },
+  "/Users/davispolito/dev/touchpy/docs/architecture-overview.md": {
+    "mtime": 1781664713.243764,
+    "ast_hash": "4896fa753cd0a79a3efb4092206f0400",
+    "semantic_hash": "4896fa753cd0a79a3efb4092206f0400"
+  },
+  "/Users/davispolito/dev/touchpy/docs/reference-material.md": {
+    "mtime": 1781664715.0608585,
+    "ast_hash": "04c4c48ffd136e2a94a03d46adf04c97",
+    "semantic_hash": "04c4c48ffd136e2a94a03d46adf04c97"
+  },
+  "/Users/davispolito/dev/touchpy/docs/requirements.txt": {
+    "mtime": 1781664641.7365046,
+    "ast_hash": "76da0fbddb84e6ac325983f79794d202",
+    "semantic_hash": "76da0fbddb84e6ac325983f79794d202"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/index.rst": {
+    "mtime": 1781664641.7368588,
+    "ast_hash": "d44b6743e1a6d57f8bf6d5ef95577ffa",
+    "semantic_hash": "d44b6743e1a6d57f8bf6d5ef95577ffa"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/macros.rst": {
+    "mtime": 1781664641.73693,
+    "ast_hash": "78af96ff2a809ff2c3572f78d1de3dd9",
+    "semantic_hash": "78af96ff2a809ff2c3572f78d1de3dd9"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/attribute.rst": {
+    "mtime": 1781664641.7370322,
+    "ast_hash": "a4765a0971d52f282a668cf3d062f569",
+    "semantic_hash": "a4765a0971d52f282a668cf3d062f569"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/class.rst": {
+    "mtime": 1781664641.7371979,
+    "ast_hash": "e08ce4f8350ab8934214501afdd6f54c",
+    "semantic_hash": "e08ce4f8350ab8934214501afdd6f54c"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/data.rst": {
+    "mtime": 1781664641.7372463,
+    "ast_hash": "4f1046b33af3d80a9bad8ade4f2ffd54",
+    "semantic_hash": "4f1046b33af3d80a9bad8ade4f2ffd54"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/exception.rst": {
+    "mtime": 1781664641.7372994,
+    "ast_hash": "d6d13e1fc96ea21131e1b77c0802dfbe",
+    "semantic_hash": "d6d13e1fc96ea21131e1b77c0802dfbe"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/function.rst": {
+    "mtime": 1781664641.737356,
+    "ast_hash": "057307a5a42686ab971c88223fec2c92",
+    "semantic_hash": "057307a5a42686ab971c88223fec2c92"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/method.rst": {
+    "mtime": 1781664641.737414,
+    "ast_hash": "0ae67c0993264bd972ef326e734fb4a2",
+    "semantic_hash": "0ae67c0993264bd972ef326e734fb4a2"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/module.rst": {
+    "mtime": 1781664641.7376187,
+    "ast_hash": "9d62cb8c875d424655bb4759c9418fe3",
+    "semantic_hash": "9d62cb8c875d424655bb4759c9418fe3"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/package.rst": {
+    "mtime": 1781664641.7376854,
+    "ast_hash": "5ed53a3bd931b8b8a57e88c80a0a9917",
+    "semantic_hash": "5ed53a3bd931b8b8a57e88c80a0a9917"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/_templates/autoapi/python/property.rst": {
+    "mtime": 1781664641.7377453,
+    "ast_hash": "d261f51d09af44c6e8b0ea16cca43b98",
+    "semantic_hash": "d261f51d09af44c6e8b0ea16cca43b98"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/examples/basic.rst": {
+    "mtime": 1781664641.737935,
+    "ast_hash": "7c8786d016484bcd36f3c96e9ec8b14d",
+    "semantic_hash": "7c8786d016484bcd36f3c96e9ec8b14d"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/index.rst": {
+    "mtime": 1781664641.7383647,
+    "ast_hash": "9a1a4740ef6b67994e03270f05d6a044",
+    "semantic_hash": "9a1a4740ef6b67994e03270f05d6a044"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/install.rst": {
+    "mtime": 1781664641.7384224,
+    "ast_hash": "6e4801fd88c84f88056aeca090d166c9",
+    "semantic_hash": "6e4801fd88c84f88056aeca090d166c9"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/license.rst": {
+    "mtime": 1781664641.7384753,
+    "ast_hash": "daf8e5e99bb57678141c1af590f05f51",
+    "semantic_hash": "daf8e5e99bb57678141c1af590f05f51"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/overview.rst": {
+    "mtime": 1781664641.738528,
+    "ast_hash": "e6ea32f4af5fa46d4e351a6a5f2c1fbe",
+    "semantic_hash": "e6ea32f4af5fa46d4e351a6a5f2c1fbe"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/types.rst": {
+    "mtime": 1781664641.7385776,
+    "ast_hash": "518a90567713c0a12ece6af64a93faa6",
+    "semantic_hash": "518a90567713c0a12ece6af64a93faa6"
+  },
+  "/Users/davispolito/dev/touchpy/docs/testing-and-runtime.md": {
+    "mtime": 1781664714.578065,
+    "ast_hash": "37bd7599ca1b221ffc0c3b12e7369049",
+    "semantic_hash": "37bd7599ca1b221ffc0c3b12e7369049"
+  },
+  "/Users/davispolito/dev/touchpy/examples/README.md": {
+    "mtime": 1781664641.7396584,
+    "ast_hash": "583c5db36f21a7656b66f278e1ad90b0",
+    "semantic_hash": "583c5db36f21a7656b66f278e1ad90b0"
+  },
+  "/Users/davispolito/dev/touchpy/examples/example_sync_dat.txt": {
+    "mtime": 1781664641.7397876,
+    "ast_hash": "1c0c0899f62fb6593f89e62dc5dd94c6",
+    "semantic_hash": "1c0c0899f62fb6593f89e62dc5dd94c6"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/CHANGES.md": {
+    "mtime": 1781664643.7913644,
+    "ast_hash": "6c567ad1c0074e6815b9f0c8d1dc1f53",
+    "semantic_hash": "6c567ad1c0074e6815b9f0c8d1dc1f53"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/LICENSE.md": {
+    "mtime": 1781664643.79142,
+    "ast_hash": "f648a6e48c96fb9528ea4067ed7106ee",
+    "semantic_hash": "f648a6e48c96fb9528ea4067ed7106ee"
+  },
+  "/Users/davispolito/dev/touchpy/external/TouchEngine-Windows/README.md": {
+    "mtime": 1781664643.7915003,
+    "ast_hash": "4ae402148acbdbc24b016c1cda9748bc",
+    "semantic_hash": "4ae402148acbdbc24b016c1cda9748bc"
+  },
+  "/Users/davispolito/dev/touchpy/tasks/README.md": {
+    "mtime": 1781664733.1966763,
+    "ast_hash": "badaaf5d280f555ed5ba7bf8130973b8",
+    "semantic_hash": "badaaf5d280f555ed5ba7bf8130973b8"
+  },
+  "/Users/davispolito/dev/touchpy/tasks/TEMPLATE.md": {
+    "mtime": 1781664735.8226233,
+    "ast_hash": "4154568b86287dcb151d1c957c662905",
+    "semantic_hash": "4154568b86287dcb151d1c957c662905"
+  },
+  "/Users/davispolito/dev/touchpy/wiki/Home.md": {
+    "mtime": 1781664761.4410326,
+    "ast_hash": "6f1ea8c5dcfa97326b6bb30468b02214",
+    "semantic_hash": "6f1ea8c5dcfa97326b6bb30468b02214"
+  },
+  "/Users/davispolito/dev/touchpy/docs/source/img/TouchPy_POP_clothsim.jpg": {
+    "mtime": 1781664641.7382698,
+    "ast_hash": "3b68d1d1d356fa2bcc395e8e5ed59172",
+    "semantic_hash": "3b68d1d1d356fa2bcc395e8e5ed59172"
+  }
+}
