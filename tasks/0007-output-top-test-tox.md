@@ -1,7 +1,7 @@
 ---
 id: 0007
 title: Add output-TOP test tox for readback testing
-status: todo
+status: done
 priority: medium
 area: testing
 created: 2026-06-24
@@ -14,7 +14,7 @@ mirror:
 
 ## Acceptance criteria
 
-- [ ] `test/tox/test_top.tox` committed — minimal Noise or Constant TOP wired to an output select
+- [x] `test/tox/test_top.tox` committed — minimal Noise or Constant TOP wired to an output select
 - [x] TOP readback tests run without setting `TOP_TOX`
 - [x] Test asserts correct shape, dtype, and non-zero pixel values
 
@@ -62,3 +62,7 @@ Create the tox in TouchDesigner. A single Noise TOP → Out TOP is sufficient. T
 - The script sets `DYLD_FRAMEWORK_PATH`, `PYTHONPATH`, validates the local Python/build/TouchEngine paths, and passes arguments through to pytest.
 - Documented that Metal/TouchEngine tests must run from a normal local shell or unsandboxed automation context because sandboxed execution can make `MTLCreateSystemDefaultDevice()` return nil.
 - Verified the runner with `scripts/test-macos-runtime.sh test/pytest/test_tops.py -q -rs`: `8 passed in 39.26s`.
+
+### 2026-06-29
+
+- Committed the TOP readback fixture, runtime runner, and split pytest coverage in `acf1053`.
