@@ -9,4 +9,4 @@ autoSetup: true
 autoSetupReqs: []
 autoSetupSyncReqs: false
 extraPaths:
-- ../td-tools/src
+- ../../../td-tools/td-tools/src
