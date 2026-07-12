@@ -12,3 +12,4 @@ Local task tracker for `touchpy`. One file per task. GitHub Issues/Projects may 
 | [0006](0006-float-top-numpy-dtype.md) | Return correct numpy dtype for float TOPs | todo |
 | [0007](0007-output-top-test-tox.md) | Add output-TOP test tox for readback testing | done |
 | [0008](0008-init-docs.md) | Run init-docs scaffold | todo |
+| [0009](0009-build-py311-abi-mismatch.md) | Build output ABI (cpython-314) mismatches downstream project venvs (3.11) | todo |
