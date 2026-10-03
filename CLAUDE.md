@@ -16,6 +16,14 @@ Before investigating any dependency, architecture, or "what uses X" question, qu
 the graph first via `/graphify`. Do not read source files cold when the graph can
 answer the question faster and with broader context.
 
+## Agent Hub
+
+The canonical agent hub is [`docs/AGENTS.md`](docs/AGENTS.md) (with
+[`docs/openloops.md`](docs/openloops.md), [`docs/changelog.md`](docs/changelog.md), and
+[`docs/Handoffs/`](docs/Handoffs/AGENTS.md)) — routing, blast-radius map, authority, and
+verification gates live there. It sits in `docs/` because repo-root `AGENTS.md` is
+Embody-generated and would be clobbered on regen.
+
 ## What This Is
 
 TouchPy is a C++17/nanobind Python extension that wraps the TouchEngine SDK, letting Python code drive TouchDesigner components. The `dev-macos` branch is an active port from Windows (CUDA + Vulkan) to macOS (Metal + Obj-C++).
